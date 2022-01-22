@@ -30,16 +30,16 @@ export default function Login() {
         justifyContent="center"
         alignItems="center"
       >
-        <Grid item lg={4} md={4} xs={12}>
+        <Grid item lg={3} md={3} xs={12}>
           <Box sx={{p: 2}}>
-            <Paper>
+            <Paper elevation={4} >
               <Box sx={{display: 'flex', justifyContent:"center", alignItems: 'center', p: 3}}> 
                   <Avatar sx={{ width: 90, height: 90 }} />
               </Box>
               <div className={classes.formInputFlex}>
-                <Box sx={{ width: "100%", p: 2}}>
-                    <Typography>
-                      Correo:
+                <Box sx={{ width: "100%", p: 2, textAlign: 'center'}}>
+                    <Typography variant='h6'>
+                      <b>Correo:</b>
                     </Typography>
                     <Box display="flex">
                       <TextField
@@ -52,9 +52,9 @@ export default function Login() {
                 </Box>
               </div>
               <div className={classes.formInputFlex}>
-                <Box sx={{ width: "100%", p: 2}}>
-                    <Typography>
-                      Contrasena:
+                <Box sx={{ width: "100%", p: 2, textAlign: 'center'}}>
+                    <Typography variant='h6' >
+                      <b>Contrasena:</b>
                     </Typography>
                     <Box display="flex">
                       <TextField
