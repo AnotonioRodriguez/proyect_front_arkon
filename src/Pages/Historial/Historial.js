@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 export default function Historial() {
-  return <div>Historial</div>;
+  return (
+    <Fragment>
+      
+    </Fragment>
+  );
 }
