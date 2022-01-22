@@ -1,27 +1,24 @@
-import './App.css';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import {Helmet} from 'react-helmet';
-
 import routes from './Config/routes';
+import { Helmet } from 'react-helmet';
 
 function App() {
-  return (
-    <div className='App'> 
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Poryecto FrontEnd Arkon</title>
-      </Helmet>
-      <Router>
-        <Switch>
-          {routes.map((route, index) => <RoutesWithSubRoutes key={index} {...route} />)}
-        </Switch>
-      </Router>
-    </div>
-  );
-};
+	return (
+		<div className="App">
+			<Helmet>
+				<meta charSet="utf-8" />
+				<title>Proyecto FrontEnd ARKON</title>
+			</Helmet>
+			<Router>
+				<Switch>{routes.map((route, index) => <RoutesWithSubRoutes key={index} {...route} />)}</Switch>
+			</Router>
+		</div>
+	);
+}
 
 function RoutesWithSubRoutes(route) {
-  return (
+	return (
 		<Route
 			path={route.path}
 			exact={route.exact}
@@ -31,3 +28,5 @@ function RoutesWithSubRoutes(route) {
 }
 
 export default App;
+
+
