@@ -15,7 +15,8 @@ export default function Navegacion() {
 
   const handleOpenMenu =()=>{
     setOpen(!open);
-  }
+  };
+  
 
   return (
     <AppBar position="static">
