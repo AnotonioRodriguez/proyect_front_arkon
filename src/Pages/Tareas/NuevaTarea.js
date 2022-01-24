@@ -1,8 +1,11 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import AddIcon from '@mui/icons-material/Add';
+import moment from 'moment';
+import { v4 as uuidv4 } from 'uuid';
+import { TareasContext } from '../../Context/tareasCtx';
 
 const useStyles = makeStyles(() => ({
     formInputFlex: {
@@ -14,12 +17,14 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function NuevaTarea() {
-
+    
     const classes = useStyles();
-
+    const { tareasCtx} = useContext(TareasContext);
+    console.log(tareasCtx);
     const [open, setOpen ] = useState(false);
     const [tarea, setTarea] = useState([]); 
-
+    const [tareas, setareas] = useState(JSON.parse(localStorage.getItem("Tareas")));
+    console.log(tareas)
     const handleOpen =()=>{
         setOpen(!open);
     };
@@ -27,8 +32,31 @@ export default function NuevaTarea() {
     const onChangeDatos =(e)=>{
         const {name, value} = e.target;
         setTarea({...tarea, [name]: value});
+    };
 
+    let datos = {
+        _id: uuidv4(),
+        titulo_tarea: tarea.titulo_tarea,
+        descripcion: tarea.descripcion,
+        fecha: moment().format(),
+        tiempo_completo: (tarea.horas +":"+ tarea.minutos +":"+ tarea.segundos),
+        minutos: tarea.minutos,
+        horas: tarea.horas,
+        segundos: tarea.segundos,
+        completada: false,
     }
+
+    const agregarTarea = () => { 
+
+        let datosLocal = localStorage.getItem("Tareas");
+
+        if(!datosLocal){
+            localStorage.setItem('Tareas', JSON.stringify(datos));
+        }else{
+            tareasCtx.push(datos);
+            localStorage.setItem("Tareas", JSON.stringify(tareasCtx));
+        }
+    };
 
 
     return (
@@ -80,6 +108,7 @@ export default function NuevaTarea() {
                             <TextField
                                 fullWidth
                                 name='fecha'
+                                value={moment().format('D MMMM YYYY')}
                                 size="small"
                                 disabled={true}
                                 variant="outlined"
@@ -111,14 +140,43 @@ export default function NuevaTarea() {
                             <Typography >
                                 <b>Tiempo:</b>
                             </Typography>
-                            <Box display="flex">
-                                <TextField
-                                    fullWidth
-                                    name='descripcion'
-                                    size="small"
-                                    variant="outlined"
-                                    onChange={onChangeDatos}
-                                />
+                            <Box display={'flex'}>
+                                <Box display="flex" alignContent={'center'} alignItems={'center'} p={1}>
+                                    <Typography>
+                                        <b>hrs.</b>
+                                    </Typography>
+                                    <TextField
+                                        fullWidth
+                                        name='horas'
+                                        size="small"
+                                        variant="outlined"
+                                        onChange={onChangeDatos}
+                                    />
+                                </Box>
+                                <Box display="flex" alignContent={'center'} alignItems={'center'} p={1}>
+                                    <Typography>
+                                        <b>min.</b>
+                                    </Typography>
+                                    <TextField
+                                        fullWidth
+                                        name='minutos'
+                                        size="small"
+                                        variant="outlined"
+                                        onChange={onChangeDatos}
+                                    />
+                                </Box>
+                                <Box display="flex" alignContent={'center'} alignItems={'center'} p={1}>
+                                    <Typography>
+                                        <b>seg.</b>
+                                    </Typography>
+                                    <TextField
+                                        fullWidth
+                                        name='segundos'
+                                        size="small"
+                                        variant="outlined"
+                                        onChange={onChangeDatos}
+                                    />
+                                </Box>
                             </Box>
                         </Box>
                     </div>
@@ -128,7 +186,7 @@ export default function NuevaTarea() {
                         size="large"
                         color="primary"
                         variant='outlined'
-                        onClick={handleOpen}
+                        onClick={agregarTarea}
                     >
                         Agregar
                     </Button>

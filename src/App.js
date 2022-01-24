@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import routes from './Config/routes';
 import { Helmet } from 'react-helmet';
+import { TareasProvider } from './Context/tareasCtx';
+
 
 function App() {
 	return (
@@ -10,9 +12,11 @@ function App() {
 				<meta charSet="utf-8" />
 				<title>Proyecto FrontEnd ARKON</title>
 			</Helmet>
-			<Router>
-				<Switch>{routes.map((route, index) => <RoutesWithSubRoutes key={index} {...route} />)}</Switch>
-			</Router>
+			<TareasProvider>
+				<Router>
+					<Switch>{routes.map((route, index) => <RoutesWithSubRoutes key={index} {...route} />)}</Switch>
+				</Router>
+			</TareasProvider>
 		</div>
 	);
 }

@@ -1,0 +1,38 @@
+[
+    {
+        "_id": "",
+        "titulo_tarea": "",
+        "descripcion": "",
+        "fecha": "",
+        "tiempo_completo": "",
+        "minutos": "",
+        "horas": "",
+        "segundos": "",
+        "completada": false,
+        "numero_tarea": 1
+    },
+    {
+        "_id": "",
+        "titulo_tarea": "",
+        "descripcion": "",
+        "fecha": "",
+        "tiempo_completo": "",
+        "minutos": "",
+        "horas": "",
+        "segundos": "",
+        "completada": false,
+        "numero_tarea": 1
+    },
+    {
+        "_id": "",
+        "titulo_tarea": "",
+        "descripcion": "",
+        "fecha": "",
+        "tiempo_completo": "",
+        "minutos": "",
+        "horas": "",
+        "segundos": "",
+        "completada": false,
+        "numero_tarea": 1
+    }
+]

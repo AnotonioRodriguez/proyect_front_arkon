@@ -26,7 +26,7 @@ const routes = [
 				exact: true,
 			},
 			{
-				path: '/estadisticas',
+				path: '/graficos',
 				component: Graficos,
 				exact: true,
 			},
