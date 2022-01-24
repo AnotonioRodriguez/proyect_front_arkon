@@ -6,13 +6,16 @@ export const TareasProvider = ({ children }) => {
 
   const [ tareasCtx, setTareasCtx ] = useState(JSON.parse(localStorage.getItem("Tareas")));
   const [ loading, setLoading ] = useState(false);
+  const [ alert, setAlert ] = useState({ message: "", status: "", open: false });
 
   return (
     <TareasContext.Provider value={{ 
       tareasCtx, 
       setTareasCtx, 
       loading, 
-      setLoading 
+      setLoading,
+      alert, 
+      setAlert
     }}>
       {children}
     </TareasContext.Provider>

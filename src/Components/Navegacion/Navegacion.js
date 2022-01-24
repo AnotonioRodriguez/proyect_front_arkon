@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, {  useContext, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,9 +8,11 @@ import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import { Avatar, Menu, Typography } from '@mui/material';
+import SnackBarMessages from '../SnackBarMessages';
+import { TareasContext } from '../../Context/tareasCtx';
 
 export default function Navegacion() {
-
+  const { alert, setAlert } = useContext(TareasContext);
   const [ open, setOpen ] = useState(false);
 
   const handleOpenMenu =()=>{
@@ -20,6 +22,7 @@ export default function Navegacion() {
 
   return (
     <AppBar position="static">
+      <SnackBarMessages alert={alert} setAlert={setAlert}  />
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Boton oculto para poder mostrar las tareas */}

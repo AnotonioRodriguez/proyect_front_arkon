@@ -1,10 +1,10 @@
-import { Box, makeStyles, Snackbar, Typography, Portal } from '@material-ui/core';
-/* import { Alert } from '@material-ui/lab'; */
+import { Box, Snackbar, Typography, Portal } from '@mui/material';
 import React from 'react';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
+import { makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
 	snack: {
 		zIndex: `${99999}!important`
 	}

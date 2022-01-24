@@ -19,12 +19,10 @@ const useStyles = makeStyles(() => ({
 export default function NuevaTarea() {
     
     const classes = useStyles();
-    const { tareasCtx} = useContext(TareasContext);
-    console.log(tareasCtx);
+    const { tareasCtx, setLoading, setAlert } = useContext(TareasContext);
     const [open, setOpen ] = useState(false);
     const [tarea, setTarea] = useState([]); 
-    const [tareas, setareas] = useState(JSON.parse(localStorage.getItem("Tareas")));
-    console.log(tareas)
+
     const handleOpen =()=>{
         setOpen(!open);
     };
@@ -47,15 +45,17 @@ export default function NuevaTarea() {
     }
 
     const agregarTarea = () => { 
-
         let datosLocal = localStorage.getItem("Tareas");
-
         if(!datosLocal){
             localStorage.setItem('Tareas', JSON.stringify(datos));
+            setLoading(true); 
         }else{
             tareasCtx.push(datos);
             localStorage.setItem("Tareas", JSON.stringify(tareasCtx));
-        }
+            setLoading(true); 
+        };
+        setAlert({ message: 'Tarea agregada con exito', status: 'success', open: true });
+        handleOpen();
     };
 
 

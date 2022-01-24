@@ -109,7 +109,7 @@ export default function CardTarea({tarea, index}) {
 };
 
 function DeleteTarea({index, handleClick}) {
-    const { tareasCtx, setLoading } = useContext(TareasContext);
+    const { tareasCtx, setLoading, setAlert } = useContext(TareasContext);
 
     const [open, setOpen] = useState(false);
 
@@ -125,6 +125,7 @@ function DeleteTarea({index, handleClick}) {
             }
         });
         setLoading(true);
+        setAlert({ message: 'Tarea eliminada con exito', status: 'success', open: true });
         handleClose(); 
         handleClick();
     };

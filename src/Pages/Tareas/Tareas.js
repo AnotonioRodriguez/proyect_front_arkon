@@ -27,7 +27,7 @@ export default function Tareas() {
 
   const classes = useStyles();
 
-  const { tareasCtx, loading,setLoading,  setTareasCtx } = useContext(TareasContext);
+  const { tareasCtx, loading, setLoading,  setTareasCtx } = useContext(TareasContext);
   
   // const onDragEnd = (result) => {
 	// 	const { destination, source } = result;
@@ -53,9 +53,8 @@ export default function Tareas() {
   
   return(
     <Fragment>
-     
       <div className={classes.formInputFlex}>
-        <Box sx={{ width: "100%", p: 1}}>
+        <Box sx={{ width: "40%", p: 1}}>
             <Typography>
                 <b>Filtras tareas por tiempo: </b>
             </Typography>
@@ -78,8 +77,8 @@ export default function Tareas() {
           <NuevaTarea />
         </Box>
       </div>
+      
       <Grid container>
-
       {/* <DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="droppable-blocks">
 					{(provided) => (
