@@ -1,6 +1,7 @@
 import { Box, FormControl, Grid, MenuItem, Select, Typography } from '@mui/material';
 import React, { Fragment, useState } from 'react';
 import { makeStyles } from '@mui/styles';
+import ListaTareas from '../Tareas/ListaTareas';
  
 const useStyles = makeStyles(() => ({
   formInputFlex: {
@@ -13,9 +14,6 @@ const useStyles = makeStyles(() => ({
 
 export default function Historial() {
 
-  const classes = useStyles();
-  const [ filtro, setFiltro ] = useState('');
-
   return (
     <Fragment>
       <Box sx={{p: 2, textAlign: 'center'}}>
@@ -23,29 +21,7 @@ export default function Historial() {
           <b>Historial de Tareas Terminadas</b>
         </Typography>
       </Box>
-      <Grid item lg={3} xs={12} md={3}>
-        <div className={classes.formInputFlex}>
-          <Box sx={{ width: "100%", p: 1}}>
-              <Typography>
-                  <b>Tareas por tiempo: </b>
-              </Typography>
-              <Box display="flex">
-                <FormControl fullWidth>
-                  <Select
-                    size="small"
-                    value={filtro}
-                    onChange={(e) => setFiltro(e.target.value)}
-                  >
-                    <MenuItem value={'ninguna'}>Ninguno</MenuItem>
-                    <MenuItem value={'corta'}>Cortas</MenuItem>
-                    <MenuItem value={'media'}>Medianas </MenuItem>
-                    <MenuItem value={'larga'}>Largas </MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-          </Box>
-        </div>
-      </Grid>
+      <ListaTareas tipoVentana={true}/>
     </Fragment>
   );
 }

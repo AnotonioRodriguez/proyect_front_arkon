@@ -23,7 +23,6 @@ export default function Navegacion() {
   return (
     <AppBar position="static">
       <SnackBarMessages alert={alert} setAlert={setAlert}  />
-      <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Boton oculto para poder mostrar las tareas */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -70,7 +69,6 @@ export default function Navegacion() {
             </Box>
           </Box>
         </Toolbar>
-      </Container>
       {/* Menu desplegable para modos responsivos */}
       <Menu
         open={open}

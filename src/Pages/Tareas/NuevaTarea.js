@@ -32,17 +32,33 @@ export default function NuevaTarea() {
         setTarea({...tarea, [name]: value});
     };
 
-    let datos = {
+    let horas = (tarea.horas ? parseInt((tarea.horas).padStart(2, "0")) : parseInt(('00').padStart(2, "0")));
+    let minutos = (tarea.minutos ? parseInt((tarea.minutos).padStart(2, "0")) : parseInt(('00').padStart(2, "0")));
+    let segundos = (tarea.segundos ? parseInt((tarea.segundos).padStart(2, "0")) : parseInt(('00').padStart(2, "0")));
+
+    let datos = [{
         _id: uuidv4(),
         titulo_tarea: tarea.titulo_tarea,
         descripcion: tarea.descripcion,
         fecha: moment().format(),
-        tiempo_completo: (tarea.horas +":"+ tarea.minutos +":"+ tarea.segundos),
-        minutos: tarea.minutos,
-        horas: tarea.horas,
-        segundos: tarea.segundos,
+        tiempo_completo: (horas +":"+ minutos +":"+ segundos),
+        minutos: minutos,
+        horas: horas,
+        segundos: segundos,
         completada: false,
-    }
+    }];
+
+    let datosDos = {
+        _id: uuidv4(),
+        titulo_tarea: tarea.titulo_tarea,
+        descripcion: tarea.descripcion,
+        fecha: moment().format(),
+        tiempo_completo: (horas +":"+ minutos +":"+  segundos),
+        minutos: minutos,
+        horas: horas,
+        segundos: segundos,
+        completada: false,
+    };
 
     const agregarTarea = () => { 
         let datosLocal = localStorage.getItem("Tareas");
@@ -50,7 +66,7 @@ export default function NuevaTarea() {
             localStorage.setItem('Tareas', JSON.stringify(datos));
             setLoading(true); 
         }else{
-            tareasCtx.push(datos);
+            tareasCtx.push(datosDos);
             localStorage.setItem("Tareas", JSON.stringify(tareasCtx));
             setLoading(true); 
         };
@@ -65,7 +81,7 @@ export default function NuevaTarea() {
                 <Button
                     startIcon={<AddIcon />}
                     onClick={handleOpen}
-                    color='primary'
+                    color='success'
                     variant='outlined'
                     size='large'
                 >
@@ -149,6 +165,8 @@ export default function NuevaTarea() {
                                         fullWidth
                                         name='horas'
                                         size="small"
+                                        type='number'
+                                        value={tarea ? tarea.horas : '00'}
                                         variant="outlined"
                                         onChange={onChangeDatos}
                                     />
@@ -161,6 +179,7 @@ export default function NuevaTarea() {
                                         fullWidth
                                         name='minutos'
                                         size="small"
+                                        type='number'
                                         variant="outlined"
                                         onChange={onChangeDatos}
                                     />
@@ -173,6 +192,7 @@ export default function NuevaTarea() {
                                         fullWidth
                                         name='segundos'
                                         size="small"
+                                        type='number'
                                         variant="outlined"
                                         onChange={onChangeDatos}
                                     />
