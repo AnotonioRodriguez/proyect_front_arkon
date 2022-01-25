@@ -45,12 +45,13 @@ export default function ListaTareas({tipoVentana}) {
   };
 
   const limpiarFiltro = () => {
-    setTareasCtx(JSON.parse(localStorage.getItem("Tareas")));
+    setTareasCtx(tareasCompletadas(tipoVentana));
     setLoading(true);
   }
 
   useEffect(() => {
     setTareasCtx(tareasCompletadas(tipoVentana));
+    setLoading(false);
   }, [ loading ]);
 
   
@@ -62,45 +63,53 @@ export default function ListaTareas({tipoVentana}) {
 
   return(
     <Fragment>
-      <div className={classes.formInputFlex}>
-        <Box sx={{ width: "40%", p: 1}}>
-            <Typography>
-                <b>Filtras tareas por tiempo: </b>
-            </Typography>
-            <Box display="flex">
-              <FormControl fullWidth>
-                <Select
-                  size="small"
-                  value={filtro}
-                  onChange={(e) =>{
-                    filtrarTareas(e.target.value)
-                    setFiltro(e.target.value)
-                  }}
-                >
-                  <MenuItem value={'ninguna'}>Ninguno</MenuItem>
-                  <MenuItem value={'corta'}>Cortas</MenuItem>
-                  <MenuItem value={'media'}>Medianas </MenuItem>
-                  <MenuItem value={'larga'}>Largas </MenuItem>
-                </Select>
-              </FormControl>
+      <Grid container>
+        <Grid item lg={3} md={5} xs={12}>
+          <div className={classes.formInputFlex}>
+            <Box sx={{ width: "100%", p: 1}}>
+                <Typography>
+                    <b>Filtras tareas por tiempo: </b>
+                </Typography>
+                <Box display="flex">
+                  <FormControl fullWidth>
+                    <Select
+                      size="small"
+                      value={filtro}
+                      onChange={(e) =>{
+                        filtrarTareas(e.target.value)
+                        setFiltro(e.target.value)
+                      }}
+                    >
+                      <MenuItem value={'ninguna'}>Ninguno</MenuItem>
+                      <MenuItem value={'corta'}>Cortas</MenuItem>
+                      <MenuItem value={'media'}>Medianas </MenuItem>
+                      <MenuItem value={'larga'}>Largas </MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
             </Box>
-        </Box>
+            </div>
+        </Grid>
         {tipoVentana === false ? (
+          <Grid item lg={2} md={3} xs={12}>
             <Box sx={{width: "100%", p: 1, display: 'flex', mt: 2}}>
                 <NuevaTarea />
             </Box>
+          </Grid>
         ) : (null)}
-        <Box sx={{width: "100%", p: 1, display: 'flex', mt: 2}}>
-          <Button
-            color='primary'
-            variant='outlined'
-            size="large"
-            onClick={limpiarFiltro}
-          >
-            Limpiar Filtro
-          </Button>
-        </Box>
-      </div>
+        <Grid item lg={2} md={3} xs={12}>
+          <Box sx={{width: "100%", p: 1, display: 'flex',alignItems: 'center', mt: 2}}>
+            <Button
+              color='primary'
+              variant='outlined'
+              size="large"
+              onClick={limpiarFiltro}
+            >
+              Limpiar Filtro
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable-blocks">
           {(provided) => (

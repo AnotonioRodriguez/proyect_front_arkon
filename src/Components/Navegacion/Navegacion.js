@@ -4,22 +4,21 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import { Avatar, Menu, Typography } from '@mui/material';
 import SnackBarMessages from '../SnackBarMessages';
 import { TareasContext } from '../../Context/tareasCtx';
+import { crearTareas } from '../../Config/reuserFuntion';
 
 export default function Navegacion() {
-  const { alert, setAlert } = useContext(TareasContext);
+  const { alert, setAlert, setLoading} = useContext(TareasContext);
   const [ open, setOpen ] = useState(false);
 
   const handleOpenMenu =()=>{
     setOpen(!open);
   };
   
-
   return (
     <AppBar position="static">
       <SnackBarMessages alert={alert} setAlert={setAlert}  />
@@ -61,6 +60,16 @@ export default function Navegacion() {
                   <b>Historial</b>
                 </Typography>
               </MenuItem>
+              <MenuItem 
+                onClick={() => {
+                  crearTareas()
+                  setLoading(true)
+                }}
+              >
+                <Typography variant='h6'> 
+                  <b>Crear Tareas</b>
+                </Typography>
+              </MenuItem>
               <MenuItem component={Link} to='/graficos'>
                 <Typography variant='h6'> 
                   <b>Graficos</b>
@@ -93,6 +102,18 @@ export default function Navegacion() {
           <MenuItem component={Link} to='/historial'>
             <Typography variant='h6'> 
               <b>Historial</b>
+            </Typography>
+          </MenuItem>
+        </Box>
+        <Box sx={{p: 1}}>
+          <MenuItem 
+            onClick={() => {
+              crearTareas()
+              setLoading(true)
+            }}
+          >
+            <Typography variant='h6'> 
+              <b>Crear Tareas</b>
             </Typography>
           </MenuItem>
         </Box>

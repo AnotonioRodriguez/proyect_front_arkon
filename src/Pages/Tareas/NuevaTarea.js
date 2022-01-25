@@ -26,7 +26,7 @@ export default function NuevaTarea() {
     const handleOpen =()=>{
         setOpen(!open);
     };
-
+    
     const onChangeDatos =(e)=>{
         const {name, value} = e.target;
         setTarea({...tarea, [name]: value});
@@ -61,13 +61,14 @@ export default function NuevaTarea() {
     };
 
     const agregarTarea = () => { 
-        let datosLocal = localStorage.getItem("Tareas");
+        let datosLocal = JSON.parse(localStorage.getItem("Tareas"));
+
         if(!datosLocal){
             localStorage.setItem('Tareas', JSON.stringify(datos));
             setLoading(true); 
         }else{
-            tareasCtx.push(datosDos);
-            localStorage.setItem("Tareas", JSON.stringify(tareasCtx));
+            datosLocal.push(datosDos);
+            localStorage.setItem("Tareas", JSON.stringify(datosLocal));
             setLoading(true); 
         };
         setAlert({ message: 'Tarea agregada con exito', status: 'success', open: true });
@@ -77,7 +78,7 @@ export default function NuevaTarea() {
 
     return (
         <Fragment>
-            <Box sx={{p: 1}} >
+            <Box sx={{display: 'flex', alignItems: 'center'}} >
                 <Button
                     startIcon={<AddIcon />}
                     onClick={handleOpen}
