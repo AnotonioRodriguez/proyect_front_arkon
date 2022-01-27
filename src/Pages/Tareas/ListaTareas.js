@@ -1,5 +1,4 @@
-import { Button, FormControl, Grid, IconButton, MenuItem, Select, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { Button, FormControl, Grid, Box, IconButton, MenuItem, Select, Typography } from '@mui/material';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import CardTarea from './CardTarea';
 import NuevaTarea from './NuevaTarea';
@@ -8,6 +7,7 @@ import { TareasContext } from '../../Context/tareasCtx';
 import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { filterTareas, tareasCompletadas } from '../../Config/reuserFuntion'
+import TareaEnCurso from './TareaEnCurso';
 
 const useStyles = makeStyles(() => ({
   formInputFlex: {
@@ -63,6 +63,7 @@ export default function ListaTareas({tipoVentana}) {
 
   return(
     <Fragment>
+
       <Grid container>
         <Grid item lg={3} md={5} xs={12}>
           <div className={classes.formInputFlex}>
@@ -90,6 +91,7 @@ export default function ListaTareas({tipoVentana}) {
             </Box>
             </div>
         </Grid>
+        
         {tipoVentana === false ? (
           <Grid item lg={2} md={3} xs={12}>
             <Box sx={{width: "100%", p: 1, display: 'flex', mt: 2}}>
@@ -110,13 +112,21 @@ export default function ListaTareas({tipoVentana}) {
           </Box>
         </Grid>
       </Grid>
+      <Grid 
+        container
+        justifyContent={'center'}
+      >
+        <Grid item lg={6}>
+            <TareaEnCurso />
+        </Grid>
+      </Grid>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable-blocks">
           {(provided) => (
-            <Grid container ref={provided.innerRef}>
+            <Box ref={provided.innerRef}>
               {renderTareas}
               {provided.placeholder}
-            </Grid>
+            </Box>
           )}
         </Droppable>
       </DragDropContext>
