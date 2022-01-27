@@ -14,7 +14,7 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 
-import { Box, Menu, Tooltip } from '@mui/material';
+import { Box, Menu, Paper, Tooltip } from '@mui/material';
 import { TareasContext } from '../../Context/tareasCtx';
 import moment from 'moment';
 import 'moment/locale/es-mx';
@@ -42,7 +42,7 @@ export default function CardTarea({tarea, index}) {
     }
 
     return (
-        <Card sx={{ minWidth: 345, maxHeight: 300 }}>
+        <Card sx={{ minWidth: 345, maxHeight: 300 }} component={Paper}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} >
@@ -50,60 +50,34 @@ export default function CardTarea({tarea, index}) {
                     </Avatar>
                 }
                 action={
-                    <IconButton 
-                        onClick={handleClick}
-                    >
-                    <MoreVertIcon />
-                    </IconButton>
-                }
-                title={tarea.titulo_tarea}
-                subheader={moment(tarea.fecha).format('Do MMMM YYYY')}
-            />
-            <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                    {tarea?.descripcion}
-                </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-                <Box sx={{flexGrow: 1, p: 1}}>
-                    <Box textAlign={'center'}>
-                        <Typography variant='h6'>
-                            <b>{tarea.tiempo_completo} hrs.</b>
-                        </Typography>
-                    </Box>
-                    {tarea.completada === true ? (null) : (
-                        <Box textAlign={'center'}>
-                            <Tooltip title="Reiniciar tarea" placement="top">
-                                <IconButton>
-                                    <ReplayIcon sx={{fontSize: 30}} />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Iniciar tarea" placement="top">
-                                <IconButton
-                                    color='primary'
-                                >
-                                    <PlayCircleIcon sx={{fontSize: 30}} />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Pausar" placement="top">
-                                <IconButton
-                                    color='error'
-                                >
-                                    <StopCircleIcon sx={{fontSize: 30}} />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Terminar" placement="top">
+                    <Box sx={{display: 'flex', justifyContent:'center'}}>
+                        <Box p={1}>
+                            <Typography>
+                                <b>{tarea.tiempo_completo} hrs.</b>
+                            </Typography>
+                        </Box>
+                        <Box>
+                            <Tooltip title="Iniciar" placement="top">
                                 <IconButton
                                     color='success'
                                     onClick={() => completarTarea(tarea, index)}
                                 >
-                                    <DoneAllIcon sx={{fontSize: 30}} />
+                                    <PlayCircleIcon sx={{fontSize: 25}} />
                                 </IconButton>
                             </Tooltip>
                         </Box>
-                    )}
-                </Box>
-            </CardActions>
+                        <Box>
+                            <IconButton 
+                                onClick={handleClick}
+                            >
+                                <MoreVertIcon />
+                            </IconButton>
+                        </Box>
+                    </Box>
+                }
+                title={tarea.titulo_tarea}
+                subheader={moment(tarea.fecha).format('Do MMMM YYYY')}
+            />
 
             <Menu
                 id="basic-menu"

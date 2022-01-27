@@ -63,9 +63,11 @@ export default function ListaTareas({tipoVentana}) {
 
   return(
     <Fragment>
-
-      <Grid container>
-        <Grid item lg={3} md={5} xs={12}>
+      <Grid 
+        container
+        justifyContent={'center'}
+      >
+        <Grid item lg={2} md={5} xs={12}>
           <div className={classes.formInputFlex}>
             <Box sx={{ width: "100%", p: 1}}>
                 <Typography>
@@ -94,13 +96,13 @@ export default function ListaTareas({tipoVentana}) {
         
         {tipoVentana === false ? (
           <Grid item lg={2} md={3} xs={12}>
-            <Box sx={{width: "100%", p: 1, display: 'flex', mt: 2}}>
+            <Box sx={{width: "100%", p: 1, display: 'flex', mt: 3}}>
                 <NuevaTarea />
             </Box>
           </Grid>
         ) : (null)}
         <Grid item lg={2} md={3} xs={12}>
-          <Box sx={{width: "100%", p: 1, display: 'flex',alignItems: 'center', mt: 2}}>
+          <Box sx={{width: "100%", p: 1, display: 'flex',alignItems: 'center', mt: 3}}>
             <Button
               color='primary'
               variant='outlined'
@@ -112,24 +114,34 @@ export default function ListaTareas({tipoVentana}) {
           </Box>
         </Grid>
       </Grid>
-      <Grid 
+      {tipoVentana === false ? (
+        <Grid 
+          container
+          justifyContent={'center'}
+        >
+          <Grid item lg={6} md={12} xs={12}>
+              <TareaEnCurso />
+          </Grid>
+        </Grid>
+      ) : (null)}
+      <Grid
         container
         justifyContent={'center'}
       >
-        <Grid item lg={6}>
-            <TareaEnCurso />
+        <Grid item lg={6} md={12} xs={12}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable-blocks">
+              {(provided) => (
+                <Box ref={provided.innerRef}>
+                  {renderTareas}
+                  {provided.placeholder}
+                </Box>
+              )}
+            </Droppable>
+          </DragDropContext>
         </Grid>
       </Grid>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable-blocks">
-          {(provided) => (
-            <Box ref={provided.innerRef}>
-              {renderTareas}
-              {provided.placeholder}
-            </Box>
-          )}
-        </Droppable>
-      </DragDropContext>
+      
     </Fragment>
   );
 };
@@ -145,14 +157,12 @@ function RenderTareas({
             ref={provided.innerRef}
             {...provided.draggableProps}
             >
-                <Grid itemn lg={3}>
-                    <IconButton {...provided.dragHandleProps}>
-                        <DragIndicatorOutlinedIcon />
-                    </IconButton>
-                    <Box sx={{p: 1}}>
-                        <CardTarea tarea={tarea} index={index} /> 
-                    </Box>
-                </Grid>
+              <IconButton {...provided.dragHandleProps}>
+                  <DragIndicatorOutlinedIcon />
+              </IconButton>
+              <Box sx={{p: 1}}>
+                  <CardTarea tarea={tarea} index={index} /> 
+              </Box>
             </Box>
 		)}
 		</Draggable>

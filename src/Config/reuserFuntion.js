@@ -114,5 +114,23 @@ export const crearTareas = () => {
     tareas.push(tareasAleatorias);
     localStorage.setItem('Tareas', JSON.stringify(tareas));
   }
-}
+};
+
+export const iniciarTarea = (tarea, key) => {
+  let tareas = JSON.parse(localStorage.getItem("Tareas"));
+  let tareasCompletas;
+  for (let i = 0; i < tareas.length; i++) {
+    if(tareas[i]._id === tarea._id){
+      tareas[i].completada = true;
+      tareasCompletas = tareas[i];
+    };
+  };
+  tareas.forEach(function(elemento, indice, array) {
+      if(key === indice){
+        tareas.splice(key, 1);
+      }
+  });
+  tareas.push(tareasCompletas);
+  localStorage.setItem('Tareas', JSON.stringify(tareas));
+};
 
