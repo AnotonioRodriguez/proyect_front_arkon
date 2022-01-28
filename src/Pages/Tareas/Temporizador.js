@@ -9,11 +9,21 @@ import { TareasContext } from '../../Context/tareasCtx';
 
 export default function App () {
     let tareaEnCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
-    const { setLoading, loading, setLoadingDelete, loadingDelete, setAlert } = useContext(TareasContext);
 
-    const [ minutes, setMinutes ] = useState( tareaEnCurso ? tareaEnCurso.minutos_curso : null );
-    const [ seconds, setSeconds ] =  useState( tareaEnCurso ? tareaEnCurso.segundos_curso : null);
-    const [ hora, setHora ] =  useState( tareaEnCurso ? tareaEnCurso.horas_curso : null);
+    const { 
+      setLoading, 
+      loading, 
+      setLoadingDelete, 
+      loadingEditar,
+      setLoadingEditar, 
+      loadingDelete, 
+      setAlert,
+      minutes, setMinutes,
+      seconds, setSeconds,
+      hora, setHora,
+    } = useContext(TareasContext);
+
+    
 
     let myInterval;
 
@@ -22,7 +32,7 @@ export default function App () {
         return ()=> {
           clearInterval(myInterval);
         };
-    }, [tareaEnCurso, loading]);
+    }, [tareaEnCurso]);
 
     
     const countDown = () =>{
@@ -47,10 +57,10 @@ export default function App () {
             setSeconds(59);
           }
         };
-        if(minutes === 0 && minutes === 0 && minutes === 0){
+        if(minutes === 0 && hora === 0 && seconds === 0){
           completarTarea();
         }
-      }, 1000)
+      }, 1000);
     }
 
     const stopTimer = () => {
@@ -74,6 +84,14 @@ export default function App () {
         setLoadingDelete(false);
       };
     }, [loadingDelete]);
+
+
+    useEffect(() => {
+      if(loadingEditar === true){
+        reiniciarReloj();
+        setLoadingEditar(false);
+      };
+    }, [loadingEditar]);
     
 
     const reiniciarReloj =()=>{

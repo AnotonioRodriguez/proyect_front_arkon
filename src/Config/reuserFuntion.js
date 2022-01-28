@@ -16,7 +16,7 @@ export const filterTareas = (value, completas) => {
     };
     if(value === 'media' ){
       for (let i = 0; i < tareas.length; i++) {
-        if(tareas[i].minutos > 30 && tareas[i].horas === 1 ){
+        if(tareas[i].minutos > 30 && tareas[i].horas === 0 ){
           tareasFiltradas.push(tareas[i]);
         }
       }
@@ -144,7 +144,6 @@ export const crearTareas = (cantidad) => {
 export const iniciarTarea = (tarea, key) => {
   let tareas = JSON.parse(localStorage.getItem("Tareas"));
   let tareaIniciada;
-  console.log('si entra'); 
 
   for (let i = 0; i < tareas.length; i++) {
     if(tareas[i]._id === tarea._id){
@@ -158,6 +157,26 @@ export const iniciarTarea = (tarea, key) => {
       }
   });
   
+  localStorage.setItem('TareaEnCurso', JSON.stringify(tareaIniciada));
+  localStorage.setItem('Tareas', JSON.stringify(tareas));
+
+};
+
+export const iniciarPrimeraTarea = () => {
+  let tareas = JSON.parse(localStorage.getItem("Tareas"));
+  let tareaIniciada;
+
+  for (let i = 0; i < tareas.length; i++) {
+    if( i === 0 ){
+      tareaIniciada = tareas[i];
+      tareas.forEach(function(elemento, indice, array) {
+          if(i === indice){
+            tareas.splice(i, 1);
+          }
+      });
+    };
+  };
+
   localStorage.setItem('TareaEnCurso', JSON.stringify(tareaIniciada));
   localStorage.setItem('Tareas', JSON.stringify(tareas));
 

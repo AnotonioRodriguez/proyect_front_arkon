@@ -33,9 +33,8 @@ export default function CardTarea({tarea, index, tipoVentana}) {
       setAnchorEl(null);
     };
 
-    const inicarTarea =(tarea, index) => {
+    const inicarTarea = (tarea, index) => {
         iniciarTarea(tarea, index);
-        console.log('si entra'); 
         setLoading(true);
     };
 

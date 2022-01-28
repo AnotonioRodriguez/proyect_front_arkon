@@ -50,38 +50,29 @@ export default function NuevaTarea() {
     let minutos = (tarea.minutos ? parseInt((tarea.minutos).padStart(2, "0")) : parseInt(('00').padStart(2, "0")));
     let segundos = (tarea.segundos ? parseInt((tarea.segundos).padStart(2, "0")) : parseInt(('00').padStart(2, "0")));
 
-    let datos = [{
+    let datos = {
         _id: uuidv4(),
         titulo_tarea: tarea.titulo_tarea,
         descripcion: tarea.descripcion,
-        fecha: moment().format(),
+        fecha: moment().format('MM-DD-YYYY'),
         tiempo_completo: (horas +":"+ minutos +":"+ segundos),
         minutos: minutos,
         horas: horas,
         segundos: segundos,
+        segundos_curso: segundos,
+        minutos_curso: minutos,
+        horas_curso: horas,
         completada: false,
-    }];
-
-    let datosDos = {
-        _id: uuidv4(),
-        titulo_tarea: tarea.titulo_tarea,
-        descripcion: tarea.descripcion,
-        fecha: moment().format(),
-        tiempo_completo: (horas +":"+ minutos +":"+  segundos),
-        minutos: minutos,
-        horas: horas,
-        segundos: segundos,
-        completada: false,
-    };
-
+    }; 
+    
     const agregarTarea = () => { 
         let datosLocal = JSON.parse(localStorage.getItem("Tareas"));
 
         if(!datosLocal){
-            localStorage.setItem('Tareas', JSON.stringify(datos));
+            localStorage.setItem('Tareas', JSON.stringify([datos]));
             setLoading(true); 
         }else{
-            datosLocal.push(datosDos);
+            datosLocal.push(datos);
             localStorage.setItem("Tareas", JSON.stringify(datosLocal));
             setLoading(true); 
         };

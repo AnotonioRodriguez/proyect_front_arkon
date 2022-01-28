@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
 
 export default function EditTarea({tarea, index, handleClick, enCurso }) {
 
-    const { setLoading, setAlert } = useContext(TareasContext);
+    const { setLoading, setAlert, setLoadingEditar } = useContext(TareasContext);
     const [open, setOpen] = useState(false);
     const classes = useStyles()
 
@@ -40,21 +40,28 @@ export default function EditTarea({tarea, index, handleClick, enCurso }) {
             tareaCurso.horas = horas;
             tareaCurso.minutos = minutos;
             tareaCurso.segundos = segundos;
+            tareaCurso.segundos_curso = segundos;
+            tareaCurso.minutos_curso = minutos;
+            tareaCurso.horas_curso = horas;
             tareaCurso.tiempo_completo = (horas +":"+ minutos +":"+ segundos);
             localStorage.setItem('TareaEnCurso', JSON.stringify(tareaCurso));
+            setLoadingEditar(true);
         }else{
             let tareas = JSON.parse(localStorage.getItem("Tareas"));
             let tareasCompletas;
             for (let i = 0; i < tareas.length; i++) {
-            if(tareas[i]._id === data){
-                tareas[i].descripcion = editTarea.descripcion;
-                tareas[i].horas = horas;
-                tareas[i].minutos = minutos;
-                tareas[i].segundos = segundos;
-                tareas[i].tiempo_completo = (horas +":"+ minutos +":"+ segundos);
+                if(tareas[i]._id === data){
+                    tareas[i].descripcion = editTarea.descripcion;
+                    tareas[i].horas = horas;
+                    tareas[i].minutos = minutos;
+                    tareas[i].segundos = segundos;
+                    tareas[i].segundos_curso = segundos;
+                    tareas[i].minutos_curso = minutos;
+                    tareas[i].horas_curso = horas;
+                    tareas[i].tiempo_completo = (horas +":"+ minutos +":"+ segundos);
 
-                tareasCompletas = tareas[i];
-            };
+                    tareasCompletas = tareas[i];
+                };
             };
             tareas.forEach(function(elemento, indice, array) {
                 if(key === indice){

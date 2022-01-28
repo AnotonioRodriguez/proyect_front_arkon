@@ -6,7 +6,7 @@ import { makeStyles } from '@mui/styles';
 import { TareasContext } from '../../Context/tareasCtx';
 import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { filterTareas, tareasCompletadas } from '../../Config/reuserFuntion'
+import { filterTareas, iniciarPrimeraTarea, tareasCompletadas } from '../../Config/reuserFuntion'
 import TareaEnCurso from './TareaEnCurso';
 import BackdropComponent from '../../Components/BackDrop'
 
@@ -27,7 +27,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 export default function ListaTareas({tipoVentana}) {
-
+  let tareaEnCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
   const classes = useStyles();
 
   const { tareasCtx, loading, setLoading, setTareasCtx } = useContext(TareasContext);
@@ -52,6 +52,9 @@ export default function ListaTareas({tipoVentana}) {
 
   useEffect(() => {
     setTareasCtx(tareasCompletadas(tipoVentana));
+    if(!tareaEnCurso){
+      iniciarPrimeraTarea();
+    }
     setLoading(false);
   }, [ loading ]);
 
