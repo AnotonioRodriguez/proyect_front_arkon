@@ -10,6 +10,7 @@ const useStyles = makeStyles(() => ({
 	}
 }));
 
+// COMPONENTE DE ALERTAS DE MENSAJES
 export default function SnackBarMessages({ alert, setAlert }) {
 	const classes = useStyles();
 
@@ -21,13 +22,15 @@ export default function SnackBarMessages({ alert, setAlert }) {
 		<Portal>
 			<Snackbar
 				className={classes.snack}
-				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-				open={alert.open}
+				// POCISIONAMIENTO DE LA BARRA DE MENSAJES
+				anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
+				open={alert.open} //ESTADO DE ABIERTO
 				onClose={handleClose}
 				autoHideDuration={3000}
 				message={
 					<Box display="flex">
-						{alert.status === 'success' ? (
+						{alert.status === 'success' ? ( 
+							// CONFIGURACION DE ESTATUS CON COLORES
 							<CheckCircleIcon style={{ color: '#22bb33' }} />
 						) : (
 							<ErrorIcon style={{ color: 'red' }} />

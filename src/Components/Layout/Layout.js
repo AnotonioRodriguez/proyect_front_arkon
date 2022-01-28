@@ -14,6 +14,8 @@ export default function Layout(props) {
     const classes = useStyles();
 
     return (
+		// Estructura de la pagina, navegacion y las rutas que se mandan a llamar
+		// dentro del layout
         <div className={classes.root}>
             <Navegacion />
             <div>
@@ -24,6 +26,8 @@ export default function Layout(props) {
 };
 
 function LoadRoutes({ routes }) {
+	// MOSTRANDO EL ENRUTAMIENTO POR MEDIO DE SWITCH 
+	// EXTRAIDO DE LA LIBRERIA DE ROUTER DOM
 	return (
 		<Switch>
 			{routes.map((route, index) => (

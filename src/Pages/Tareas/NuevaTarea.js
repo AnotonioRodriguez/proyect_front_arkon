@@ -1,6 +1,11 @@
 import React, { Fragment, useContext, useState } from 'react';
 import { makeStyles } from '@mui/styles';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
+import { 
+    Button, Dialog, DialogActions, 
+    DialogContent, DialogTitle, 
+    FormControl, MenuItem, Select, 
+    TextField, Typography 
+} from '@mui/material';
 import { Box } from '@mui/system';
 import AddIcon from '@mui/icons-material/Add';
 import moment from 'moment';
@@ -31,30 +36,57 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function NuevaTarea() {
-    
     const classes = useStyles();
+    // obtnemos los datos de estado 
     const { loading, setLoading, setAlert } = useContext(TareasContext);
     const [open, setOpen ] = useState(false);
     const [tarea, setTarea] = useState([]); 
+    const [tiempoPre, setTiempoPre] = useState(''); 
 
     const handleOpen =()=>{
         setOpen(!open);
     };
     
+    //Funcion encargada de obtener los datos de los campos de texto
     const onChangeDatos =(e)=>{
         const {name, value} = e.target;
         setTarea({...tarea, [name]: value});
     };
 
-    let horas = (tarea.horas ? parseInt((tarea.horas).padStart(2, "0")) : parseInt(('00').padStart(2, "0")));
-    let minutos = (tarea.minutos ? parseInt((tarea.minutos).padStart(2, "0")) : parseInt(('00').padStart(2, "0")));
-    let segundos = (tarea.segundos ? parseInt((tarea.segundos).padStart(2, "0")) : parseInt(('00').padStart(2, "0")));
+    // funcion encargada de guardar los tiempos predeterminados en caso de se elegidos
+    // Devemos de condcionar cada tipo de tarea para guardar lo correspondiente
+    const onChangeTiempoPre = (e) => {
+        // destructuramos los datos
+        const { value } = e.target;
+        setTiempoPre(value)
+        if(value === 'corta'){
+            setTarea({...tarea,'horas': 0, 'minutos': 30, 'segundos': 0});
+        }
+        if(value === 'media'){
+            setTarea({...tarea,'horas': 0, 'minutos': 45, 'segundos': 0});
+        }
+        if(value === 'larga'){
+            setTarea({...tarea, 'horas': 1, 'minutos': 0, 'segundos': 0});
+        }
+    };
 
+    // inicializamos los datos de las horas y covertimos a tipo int
+    // o condicionamos en caso de no existir
+    let horas = (tarea.horas ? parseInt((tarea.horas)) : parseInt(('00')));
+    let minutos = (tarea.minutos ? parseInt((tarea.minutos)) : parseInt(('00')));
+    let segundos = (tarea.segundos ? parseInt((tarea.segundos)) : parseInt(('00')));
+
+    // Objeto de datos
     let datos = {
-        _id: uuidv4(),
+        // Un identificador
+        _id: uuidv4(), 
+        // titlo de tarea y decripcion
         titulo_tarea: tarea.titulo_tarea,
         descripcion: tarea.descripcion,
+        // fecha de creacion
         fecha: moment().format('MM-DD-YYYY'),
+        // datos de tiempo tanto el tiempo completo, como separado, y los minutos en curso
+        // que seran los mismos para controlar el tiempo en marcha y temrinado
         tiempo_completo: (horas +":"+ minutos +":"+ segundos),
         minutos: minutos,
         horas: horas,
@@ -62,17 +94,23 @@ export default function NuevaTarea() {
         segundos_curso: segundos,
         minutos_curso: minutos,
         horas_curso: horas,
+        // estado de completada para filtro declara en false por ser la primera aun no completada
         completada: false,
     }; 
     
+    // funcion encargada de agregar una nueva tarea
     const agregarTarea = () => { 
+        // tomamos datos de LS
         let datosLocal = JSON.parse(localStorage.getItem("Tareas"));
-
+        // Condicionamos si ya existe un array de objetos de tareas
         if(!datosLocal){
+            // en caso de no existir crearemos el primero
             localStorage.setItem('Tareas', JSON.stringify([datos]));
             setLoading(true); 
         }else{
+            // en caso de ya existir guardaremos dentro del array el nuevo objeto
             datosLocal.push(datos);
+            // Para despues guardar el nuevo array de datos dentero de LS
             localStorage.setItem("Tareas", JSON.stringify(datosLocal));
             setLoading(true); 
         };
@@ -119,6 +157,7 @@ export default function NuevaTarea() {
                                 name='titulo_tarea'
                                 size="small"
                                 variant="outlined"
+                                // Funciones para tomar los datos
                                 onChange={onChangeDatos}
                             />
                             </Box>
@@ -160,6 +199,27 @@ export default function NuevaTarea() {
                     </div>
                     <div className={classes.formInputFlex}>
                         <Box sx={{ width: "100%", p: 1}}>
+                            <Typography>
+                                <b>Tiempos Sugeridos: </b>
+                            </Typography>
+                            <Box display="flex">
+                            <FormControl fullWidth>
+                                <Select
+                                size="small"
+                                value={tiempoPre}
+                                onChange={onChangeTiempoPre}
+                                >
+                                <MenuItem value={'ninguna'}>Ninguno</MenuItem>
+                                <MenuItem value={'corta'}>Corta (30min.)</MenuItem>
+                                <MenuItem value={'media'}>Medianas (45min.)</MenuItem>
+                                <MenuItem value={'larga'}>Largas (1hr.)</MenuItem>
+                                </Select>
+                            </FormControl>
+                            </Box>
+                        </Box>
+                    </div>
+                    <div className={classes.formInputFlex}>
+                        <Box sx={{ width: "100%", p: 1}}>
                             <Typography >
                                 <b>Tiempo:</b>
                             </Typography>
@@ -189,6 +249,7 @@ export default function NuevaTarea() {
                                         size="small"
                                         type='number'
                                         className={classes.input}
+                                        value={tarea ? tarea.minutos : '00'}
                                         variant="outlined"
                                         onChange={onChangeDatos}
                                     />
@@ -201,6 +262,7 @@ export default function NuevaTarea() {
                                         fullWidth
                                         name='segundos'
                                         className={classes.input}
+                                        value={tarea ? tarea.segundos : '00'}
                                         size="small"
                                         type='number'
                                         variant="outlined"

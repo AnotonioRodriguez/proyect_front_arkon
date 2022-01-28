@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function EditTarea({tarea, index, handleClick, enCurso }) {
-
+// Datos de estado y de context
     const { setLoading, setAlert, setLoadingEditar } = useContext(TareasContext);
     const [open, setOpen] = useState(false);
     const classes = useStyles()
@@ -24,18 +24,28 @@ export default function EditTarea({tarea, index, handleClick, enCurso }) {
     };
     const [editTarea, setEditTarea] = useState(tarea); 
 
+    // Funcion encargada de obbtener todos los datos de los Campos de texto
+    // Por medio del operador Sprin podemos editar los datos dentro de un objeto
+    // sobreescribirlos
     const onChangeDatos =(e)=>{
         const {name, value} = e.target;
         setEditTarea({...tarea, [name]: value});
     };
 
+    // Guardar dentro de variables los datos de tiempo a editar
+    // convertirmos los string a numeros enteros
     let horas = (editTarea.horas ? parseInt((editTarea.horas)) : parseInt('00') );
     let minutos = (editTarea.minutos ? parseInt((editTarea.minutos)) : parseInt('00') );
     let segundos = (editTarea.segundos ? parseInt((editTarea.segundos)) : parseInt('00') );
 
+    // FUNCION ENCARGADA DE EDITAR EL ARREGLO DE LA LISTA
     const editarTarea = (data, key) => {
+        // Verificamos si la lista elegiuda es la que esta en curso o una de la lista
         if(enCurso === true ){
+            // Tomamos los datos de LS
             let tareaCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
+            // editamos cada datos correpondiente
+            // debemos de actualizar correctamente todos los datos ya sean los en curso o estatitcos
             tareaCurso.descripcion = editTarea.descripcion;
             tareaCurso.horas = horas;
             tareaCurso.minutos = minutos;
@@ -44,13 +54,19 @@ export default function EditTarea({tarea, index, handleClick, enCurso }) {
             tareaCurso.minutos_curso = minutos;
             tareaCurso.horas_curso = horas;
             tareaCurso.tiempo_completo = (horas +":"+ minutos +":"+ segundos);
+            // Guardamos nuetro objeto dentro de LS de nuevo ya actualizado
             localStorage.setItem('TareaEnCurso', JSON.stringify(tareaCurso));
             setLoadingEditar(true);
         }else{
+            // Al ser de una lista tomaremos los datos completos de toda la lista
             let tareas = JSON.parse(localStorage.getItem("Tareas"));
+            // declaramos nuevo arreglo para guardar datos
             let tareasCompletas;
+            // recorremos toda la lista
             for (let i = 0; i < tareas.length; i++) {
+                // Debemos de comprar por medio del id que tarea vamos a editar
                 if(tareas[i]._id === data){
+                    // debemos de seleccionar los campos cuidadosos a editar
                     tareas[i].descripcion = editTarea.descripcion;
                     tareas[i].horas = horas;
                     tareas[i].minutos = minutos;
@@ -59,18 +75,22 @@ export default function EditTarea({tarea, index, handleClick, enCurso }) {
                     tareas[i].minutos_curso = minutos;
                     tareas[i].horas_curso = horas;
                     tareas[i].tiempo_completo = (horas +":"+ minutos +":"+ segundos);
-
                     tareasCompletas = tareas[i];
                 };
             };
+            // recorreremos el arreglo de datos
+            // para poder eliminar el objeto que hemos editado
             tareas.forEach(function(elemento, indice, array) {
                 if(key === indice){
                 tareas.splice(key, 1);
                 }
             });
+            // Guardamos en el arreglo editado nuestro nuevo objeto editado
             tareas.push(tareasCompletas);
+            // Guardamos los datos de nuevo en su item de LS
             localStorage.setItem('Tareas', JSON.stringify(tareas));
         }
+        // Lanzamos mensajes de alerta y actualizamos nuestros estados
         setAlert({ message: 'Tarea editada con exito', status: 'success', open: true });
         setLoading(true);
         handleClose();
@@ -111,9 +131,11 @@ export default function EditTarea({tarea, index, handleClick, enCurso }) {
                                 name='descripcion'
                                 size="small"
                                 multiline
+                                // Mostrar los valores por defaulst a editar
                                 value={editTarea ? editTarea.descripcion : ""}
                                 rows={3}
                                 variant="outlined"
+                                // funcion encargada de obtener los datos del campo de texto
                                 onChange={onChangeDatos}
                             />
                             </Box>

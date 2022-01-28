@@ -27,6 +27,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 export default function ListaTareas({tipoVentana}) {
+  // obtenemos los datos de los estados y de LS
   let tareaEnCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
   const classes = useStyles();
 
@@ -39,17 +40,25 @@ export default function ListaTareas({tipoVentana}) {
 		const new_elements = reorder( source.index, destination.index);
 	};
 
+  // estado encargado del filtro de datos
   const [ filtro, setFiltro ] = useState('');
 
+  // Funcion encargada de obtener los datos de filtracion de la funcion
+  // Para poderlos guardar dentro del context general que muestra los datos
   const filtrarTareas = (value) => {
     setTareasCtx(filterTareas(value, tipoVentana));
   };
 
+  // limpiar el context de nuevo con todos los datos
+  // por medio de esta funcion y recargar el estado
   const limpiarFiltro = () => {
     setLoading(true);
     setTareasCtx(tareasCompletadas(tipoVentana));
   };
 
+  // UseEffect para poder recargar los datos de inicio
+  // Mas sin embargo si no exite una tarea en curso
+  // Usaremos nuestra funcion de iniciar la primer tarea de nuestra lista
   useEffect(() => {
     setTareasCtx(tareasCompletadas(tipoVentana));
     if(!tareaEnCurso){
@@ -59,6 +68,7 @@ export default function ListaTareas({tipoVentana}) {
   }, [ loading ]);
 
   
+  // Mapearemos todas nuestras tareas del context por medio de esta constante
   const renderTareas = tareasCtx?.map((tarea, index) => {
     return(
       <RenderTareas tarea={tarea} index={index} key={tarea._id} tipoVentana={tipoVentana} />
@@ -84,6 +94,7 @@ export default function ListaTareas({tipoVentana}) {
                       size="small"
                       value={filtro}
                       onChange={(e) =>{
+                        // Obrtener filtro de datos
                         filtrarTareas(e.target.value)
                         setFiltro(e.target.value)
                       }}
@@ -99,6 +110,7 @@ export default function ListaTareas({tipoVentana}) {
             </div>
         </Grid>
         
+        {/* Condicionar en alguna ventanas sobre en que estado te encuetras para saber que componentes mostrar */}
         {tipoVentana === false ? (
           <Grid item lg={2} md={3} xs={12}>
             <Box sx={{width: "100%", p: 1, display: 'flex', mt: 3}}>
@@ -106,6 +118,7 @@ export default function ListaTareas({tipoVentana}) {
             </Box>
           </Grid>
         ) : (null)}
+        {/* Boton encargado de limpiar el filtro por completo */}
         <Grid item lg={2} md={3} xs={12}>
           <Box sx={{width: "100%", p: 1, display: 'flex',alignItems: 'center', mt: 3}}>
             <Button
@@ -119,6 +132,7 @@ export default function ListaTareas({tipoVentana}) {
           </Box>
         </Grid>
       </Grid>
+      {/* condicionando la venta para mostrar la tarea en curso */}
       {tipoVentana === false ? (
         <Grid 
           container
@@ -129,6 +143,7 @@ export default function ListaTareas({tipoVentana}) {
           </Grid>
         </Grid>
       ) : (null)}
+      {/* Apartado lista de  */}
       <Grid
         container
         justifyContent={'center'}
@@ -151,6 +166,8 @@ export default function ListaTareas({tipoVentana}) {
   );
 };
 
+// CREAMOS una funcion encargada de  poder renderizar los datos adecuados de las tareas
+// Para en conjuntos de la libreria de Draggable poder manipular la lista
 function RenderTareas({
   index,
   tarea,
@@ -163,9 +180,11 @@ function RenderTareas({
         ref={provided.innerRef}
         {...provided.draggableProps}
       >
-        <IconButton {...provided.dragHandleProps}>
-            <DragIndicatorOutlinedIcon />
-        </IconButton>
+        {tipoVentana === false ? (
+          <IconButton {...provided.dragHandleProps}>
+              <DragIndicatorOutlinedIcon />
+          </IconButton>
+        ) : null}
         <Box sx={{p: 1}}>
             <CardTarea tarea={tarea} index={index} tipoVentana={tipoVentana} /> 
         </Box>

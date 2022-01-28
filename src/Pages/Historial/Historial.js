@@ -4,6 +4,7 @@ import ListaTareas from '../Tareas/ListaTareas';
  
 export default function Historial() {
 
+  // componente de las tareas completadas
   return (
     <Fragment>
       <Box sx={{p: 2, textAlign: 'center'}}>

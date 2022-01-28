@@ -4,6 +4,7 @@ import Historial from "../Pages/Historial/Historial";
 import Login from "../Pages/Login/Login";
 import Tareas from "../Pages/Tareas/Tareas";
 
+// Arreglo de rutas que se usaran dentro de la pagina
 const routes = [
     {
         path: '/',

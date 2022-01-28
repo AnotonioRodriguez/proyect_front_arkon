@@ -5,10 +5,8 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-
 import { Box, Menu, Paper, Tooltip } from '@mui/material';
 import { TareasContext } from '../../Context/tareasCtx';
 import moment from 'moment';
@@ -18,10 +16,12 @@ import EditTarea from './EditTarea';
 import DeleteTarea from './DeleteTarea';
 
 export default function CardTarea({tarea, index, tipoVentana}) {
-    const { setLoading } = useContext(TareasContext);
-
+    // Llamamos los datos de actualizacion del context
+    const { setLoading } = useContext(TareasContext); 
+    // Tomamos datos de local storage
     let tareaEnCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
 
+    // Manipulacion de Menu
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -33,10 +33,16 @@ export default function CardTarea({tarea, index, tipoVentana}) {
       setAnchorEl(null);
     };
 
+    // Funcion encargada de mandar a llamar la funcion encargada de iniciar una tarea
+    // actulizar el estado para poder cargar los datos
     const inicarTarea = (tarea, index) => {
         iniciarTarea(tarea, index);
         setLoading(true);
     };
+
+    // let minutosTiempo = (tarea.minutos_curso - 60);
+    // let segundosTiempo = (tarea.segundos_curso - 60);
+    // let horasTiempo = (tarea.horas_curso - 2);
 
     return (
         <Card sx={{ minWidth: 345, maxHeight: 300 }} component={Paper}>
@@ -50,9 +56,13 @@ export default function CardTarea({tarea, index, tipoVentana}) {
                     <Box sx={{display: 'flex', justifyContent:'center'}}>
                         <Box p={1} sx={{textOverflow: 'ellipsis', overflow: 'hidden'}}>
                             <Typography>
-                                <b>0{tarea.horas}:{tarea.minutos >= 10 ? tarea.minutos : `0${tarea.minutos}`}:{tarea.segundos >= 10 ? tarea.segundos : `0${tarea.segundos}`} hrs.</b>
+                                <b>
+                                    {/* {horasTiempo} : {minutosTiempo} : {segundosTiempo} hrs. */}
+                                </b>
                             </Typography>
                         </Box>
+                        {/* Concionamos el tipo de ventana que se estara mosntrando ya que estamos reutilizando componentes */}
+                        {/* el tipo de ventana que se hace llegar por props nos ayuda a saber si es historial o tareas */}
                         {tipoVentana === true ? (null) : (
                             <>
                                 <Box>
@@ -88,6 +98,7 @@ export default function CardTarea({tarea, index, tipoVentana}) {
                 }
                 subheader={moment(tarea.fecha).format('Do MMMM YYYY')}
             />
+            {/* Menu usado para poder desplegar los componentes de eliminar y editar tareas */}
             <Menu
                 id="basic-menu"
                 open={open}
@@ -98,9 +109,11 @@ export default function CardTarea({tarea, index, tipoVentana}) {
                 }}
             >
                 <Box>
+                    {/* Componente de eliminar tareas */}
                     <DeleteTarea idTarea={tarea._id} index={index} handleClick={handleClick} />
                 </Box>
                 <Box>
+                    {/* Componente de editar tareas */}
                     <EditTarea tarea={tarea} index={index} handleClick={handleClick} />
                 </Box>
             </Menu>

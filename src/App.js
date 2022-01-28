@@ -4,7 +4,8 @@ import routes from './Config/routes';
 import { Helmet } from 'react-helmet';
 import { TareasProvider } from './Context/tareasCtx';
 
-
+// Un context general de todas las tareas para poder manipularlo de mejor manera 
+// en diferentes componentes que se requiera
 function App() {
 	return (
 		<div className="App">
@@ -21,6 +22,7 @@ function App() {
 	);
 }
 
+// en este apartado se hace el erutamiento de las pocas rutas exitentes
 function RoutesWithSubRoutes(route) {
 	return (
 		<Route

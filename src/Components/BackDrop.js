@@ -13,10 +13,7 @@ const useStyles = makeStyles(() => ({
 export default function BackdropComponent({loading, setLoading}) {
   const classes = useStyles();
 
-  /* const handleClose = () => {
-    setLoading(false);
-  }; */
-
+  // Componente de LOADING
   return (
     <div>
       <Backdrop className={classes.backdrop} open={loading} /* onClick={handleClose} */>
