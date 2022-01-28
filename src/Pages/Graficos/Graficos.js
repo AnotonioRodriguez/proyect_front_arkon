@@ -31,7 +31,7 @@ export default function Graficos() {
           <b>Estadisticas de historial de datos</b>
         </Typography>
       </Box>
-      <Grid item lg={3} xs={12} md={3}>
+      {/* <Grid item lg={3} xs={12} md={3}>
         <div className={classes.formInputFlex}>
           <Box sx={{ width: "100%", p: 1}}>
               <Typography>
@@ -53,7 +53,7 @@ export default function Graficos() {
               </Box>
           </Box>
         </div>
-      </Grid>
+      </Grid> */}
       <Grid container>
         <Grid item lg={7} md={6} xs={3}>
           <VictoryChart>

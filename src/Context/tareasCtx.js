@@ -6,6 +6,7 @@ export const TareasProvider = ({ children }) => {
 
   const [ tareasCtx, setTareasCtx ] = useState(JSON.parse(localStorage.getItem("Tareas")));
   const [ loading, setLoading ] = useState(false);
+  const [ loadingDelete, setLoadingDelete ] = useState(false);
   const [ alert, setAlert ] = useState({ message: "", status: "", open: false });
 
   return (
@@ -14,6 +15,8 @@ export const TareasProvider = ({ children }) => {
       setTareasCtx, 
       loading, 
       setLoading,
+      loadingDelete, 
+      setLoadingDelete,
       alert, 
       setAlert
     }}>

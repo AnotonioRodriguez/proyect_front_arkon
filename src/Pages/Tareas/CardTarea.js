@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
@@ -9,7 +9,7 @@ import { red } from '@mui/material/colors';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 
-import { Box, Button, Menu, Paper, Tooltip } from '@mui/material';
+import { Box, Menu, Paper, Tooltip } from '@mui/material';
 import { TareasContext } from '../../Context/tareasCtx';
 import moment from 'moment';
 import 'moment/locale/es-mx';
@@ -33,8 +33,9 @@ export default function CardTarea({tarea, index, tipoVentana}) {
       setAnchorEl(null);
     };
 
-    const completarTarea =(tarea, index) => {
+    const inicarTarea =(tarea, index) => {
         iniciarTarea(tarea, index);
+        console.log('si entra'); 
         setLoading(true);
     };
 
@@ -50,7 +51,7 @@ export default function CardTarea({tarea, index, tipoVentana}) {
                     <Box sx={{display: 'flex', justifyContent:'center'}}>
                         <Box p={1} sx={{textOverflow: 'ellipsis', overflow: 'hidden'}}>
                             <Typography>
-                                <b>{tarea.tiempo_completo} hrs.</b>
+                                <b>0{tarea.horas}:{tarea.minutos >= 10 ? tarea.minutos : `0${tarea.minutos}`}:{tarea.segundos >= 10 ? tarea.segundos : `0${tarea.segundos}`} hrs.</b>
                             </Typography>
                         </Box>
                         {tipoVentana === true ? (null) : (
@@ -60,7 +61,7 @@ export default function CardTarea({tarea, index, tipoVentana}) {
                                         <IconButton
                                             disabled={tareaEnCurso ? true : false}
                                             color='success'
-                                            onClick={() => completarTarea(tarea, index)}
+                                            onClick={() => inicarTarea(tarea, index)}
                                         >
                                             <PlayCircleIcon sx={{fontSize: 25}} />
                                         </IconButton>

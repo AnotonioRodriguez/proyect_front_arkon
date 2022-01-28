@@ -94,6 +94,9 @@ export const crearTareas = (cantidad) => {
     let horas = Math.ceil(Math.random()*2);
     let segundos = Math.floor(Math.random()*59);
 
+    let minutos_curso = Math.floor(Math.random()*minutos);
+    let segundos_curso = Math.floor(Math.random()*segundos);
+
     let datosDos = {
       _id: uuidv4(),
       titulo_tarea: `Tarea ${i+1}`,
@@ -103,16 +106,28 @@ export const crearTareas = (cantidad) => {
       minutos: 0,
       horas: horas,
       segundos: 0,
+      segundos_curso: 0,
+      minutos_curso: 0,
+      horas_curso: 0,
       completada: false,
     }; 
 
     if(horas === 2){
       datosDos.minutos = 0; 
       datosDos.segundos = 0; 
+
+      datosDos.segundos_curso = parseInt((segundos_curso/2)); 
+      datosDos.minutos_curso = parseInt((minutos_curso/2)); 
+
       datosDos.tiempo_completo =  (horas + ":00:00");
     }else{
+
       datosDos.minutos = minutos;
       datosDos.segundos = segundos;
+
+      datosDos.segundos_curso = parseInt((segundos_curso/2)); 
+      datosDos.minutos_curso = parseInt((minutos_curso/2));
+
       datosDos.tiempo_completo =  (horas + ":" + minutos + ":" + segundos)
     };
     tareasAleatorias.push(datosDos);
@@ -129,6 +144,7 @@ export const crearTareas = (cantidad) => {
 export const iniciarTarea = (tarea, key) => {
   let tareas = JSON.parse(localStorage.getItem("Tareas"));
   let tareaIniciada;
+  console.log('si entra'); 
 
   for (let i = 0; i < tareas.length; i++) {
     if(tareas[i]._id === tarea._id){

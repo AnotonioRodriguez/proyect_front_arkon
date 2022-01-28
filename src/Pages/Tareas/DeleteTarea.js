@@ -2,22 +2,10 @@ import { Box, Button, Dialog, DialogActions, Typography } from '@mui/material';
 import React, { useContext, useState } from 'react';
 import { TareasContext } from '../../Context/tareasCtx';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { makeStyles } from '@mui/styles';
-
-
-const useStyles = makeStyles(() => ({
-    formInputFlex: {
-        display: 'flex',
-        paddingTop: 0,
-        alignItems: "center",
-        justifyItems: "center"
-    }
-}));
-
 
 export default function DeleteTarea({tarea, index,handleClick, enCurso}) {
 
-    const { tareasCtx, setLoading, setAlert } = useContext(TareasContext);
+    const { tareasCtx, setLoading, setLoadingDelete, setAlert } = useContext(TareasContext);
 
     const [open, setOpen] = useState(false);
 
@@ -31,6 +19,7 @@ export default function DeleteTarea({tarea, index,handleClick, enCurso}) {
             setLoading(true);
             setAlert({ message: 'Tarea eliminada con exito', status: 'success', open: true });
             handleClose(); 
+            setLoadingDelete(true);
             handleClick();
         }else{
             tareasCtx.forEach(function(elemento, indice, array) {

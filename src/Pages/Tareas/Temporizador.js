@@ -9,11 +9,11 @@ import { TareasContext } from '../../Context/tareasCtx';
 
 export default function App () {
     let tareaEnCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
-    const { setLoading, loading, setAlert } = useContext(TareasContext);
+    const { setLoading, loading, setLoadingDelete, loadingDelete, setAlert } = useContext(TareasContext);
 
-    const [ minutes, setMinutes ] = useState( tareaEnCurso ? tareaEnCurso.minutos : 0 );
-    const [ seconds, setSeconds ] =  useState( tareaEnCurso ? tareaEnCurso.segundos : 0);
-    const [ hora, setHora ] =  useState( tareaEnCurso ? tareaEnCurso.horas : 0);
+    const [ minutes, setMinutes ] = useState( tareaEnCurso ? tareaEnCurso.minutos_curso : null );
+    const [ seconds, setSeconds ] =  useState( tareaEnCurso ? tareaEnCurso.segundos_curso : null);
+    const [ hora, setHora ] =  useState( tareaEnCurso ? tareaEnCurso.horas_curso : null);
 
     let myInterval;
 
@@ -22,9 +22,9 @@ export default function App () {
         return ()=> {
           clearInterval(myInterval);
         };
-    
-      }, [tareaEnCurso, loading]);
+    }, [tareaEnCurso, loading]);
 
+    
     const countDown = () =>{
       myInterval = setInterval(() => {
         if (seconds > 0) {
@@ -47,7 +47,9 @@ export default function App () {
             setSeconds(59);
           }
         };
-
+        if(minutes === 0 && minutes === 0 && minutes === 0){
+          completarTarea();
+        }
       }, 1000)
     }
 
@@ -60,10 +62,19 @@ export default function App () {
     }
 
     const limpiarReloj =()=>{
-      setMinutes(0);
-      setSeconds(0);
-      setHora(0);
-    }
+      setMinutes(null);
+      setSeconds(null);
+      setHora(null);
+    };
+
+    useEffect(() => {
+      if(loadingDelete === true){
+        limpiarReloj();
+        clearInterval(myInterval); 
+        setLoadingDelete(false);
+      };
+    }, [loadingDelete]);
+    
 
     const reiniciarReloj =()=>{
       setMinutes(tareaEnCurso?.minutos);
@@ -88,7 +99,7 @@ export default function App () {
   return (
       <div>
       <Box textAlign={'center'}>
-        { minutes === 0 && seconds === 0 && hora === 0
+        { minutes === null && seconds === null && hora === null
           ? null
           : <Typography variant='h5'>{ hora < 10 ?  `0${hora}` : hora}:{minutes < 10 ?  `0${minutes}` : minutes}:{seconds < 10 ?  `0${seconds}` : seconds} hrs</Typography> 
         }

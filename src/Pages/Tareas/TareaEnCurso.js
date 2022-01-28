@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {  Card, CardActions, CardContent, IconButton, Menu, Tooltip, Typography } from '@mui/material';
+import {  Card, CardContent, IconButton, Menu, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteTarea from './DeleteTarea';
@@ -41,6 +41,11 @@ export default function TareaEnCurso() {
                         <Box sx={{ textOverflow: 'ellipsis'}}>
                             <Typography>
                                 {tareaEnCurso ? moment(tareaEnCurso.fecha).format('D MMMM YYYY') : ""}
+                            </Typography>
+                        </Box>
+                        <Box sx={{ textOverflow: 'ellipsis'}}>
+                            <Typography>
+                                Tiempo estimado: <b>{tareaEnCurso ? tareaEnCurso.tiempo_completo : ""}</b> hrs.
                             </Typography>
                         </Box>
                     </Box>

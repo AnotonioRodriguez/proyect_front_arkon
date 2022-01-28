@@ -14,6 +14,19 @@ const useStyles = makeStyles(() => ({
         paddingTop: 0,
         alignItems: "center",
         justifyItems: "center"
+    },
+    input: {
+        "& input[type=number]": {
+          "-moz-appearance": "textfield",
+        },
+        "& input[type=number]::-webkit-outer-spin-button": {
+          "-webkit-appearance": "none",
+          margin: 0,
+        },
+        "& input[type=number]::-webkit-inner-spin-button": {
+          "-webkit-appearance": "none",
+          margin: 0,
+        },
     }
 }));
 
@@ -169,6 +182,7 @@ export default function NuevaTarea() {
                                         name='horas'
                                         size="small"
                                         type='number'
+                                        className={classes.input}
                                         value={tarea ? tarea.horas : '00'}
                                         variant="outlined"
                                         onChange={onChangeDatos}
@@ -183,6 +197,7 @@ export default function NuevaTarea() {
                                         name='minutos'
                                         size="small"
                                         type='number'
+                                        className={classes.input}
                                         variant="outlined"
                                         onChange={onChangeDatos}
                                     />
@@ -194,6 +209,7 @@ export default function NuevaTarea() {
                                     <TextField
                                         fullWidth
                                         name='segundos'
+                                        className={classes.input}
                                         size="small"
                                         type='number'
                                         variant="outlined"
