@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {  Card, CardActions, CardContent, IconButton, Menu, Tooltip, Typography } from '@mui/material';
-// import moment from 'moment';
 import { Box } from '@mui/system';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
-import ReplayIcon from '@mui/icons-material/Replay';
-import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import StopCircleIcon from '@mui/icons-material/StopCircle';
 import DeleteTarea from './DeleteTarea';
 import EditTarea from './EditTarea';
+import { TareasContext } from '../../Context/tareasCtx';
+import moment from 'moment';
+import BackdropComponent from '../../Components/BackDrop';
+import App from './Temporizador';
 
-export default function TareaEnCurso({tarea}) {
+export default function TareaEnCurso() {
+    
+    let tareaEnCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
     
     const [anchorEl, setAnchorEl] = useState(null);
+    const { loading, } = useContext(TareasContext);
     const open = Boolean(anchorEl);
 
     const handleClick = (event) => {
@@ -22,76 +24,44 @@ export default function TareaEnCurso({tarea}) {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
     
     return (
         <diiv>
+            <BackdropComponent loading={loading} />
             <Card sx={{ minWidth: 200, minHeight: 100 }}>
             <CardContent>
                 <Box sx={{display: 'flex', p: 1}}>
                     <Box sx={{ flexGrow: 1 }}>
-                        <Typography variant='h6'>
-                            'Titulo de mi primera tarea'
-                        </Typography>
-                        <Typography>
-                            'Fecha de mi atarea'
-                        </Typography>
+                        <Box sx={{ textOverflow: 'ellipsis'}}>
+                            <Typography variant='h6'>
+                                {tareaEnCurso ? tareaEnCurso.titulo_tarea : ""}
+                            </Typography>
+                        </Box>
+                        <Box sx={{ textOverflow: 'ellipsis'}}>
+                            <Typography>
+                                {tareaEnCurso ? moment(tareaEnCurso.fecha).format('D MMMM YYYY') : ""}
+                            </Typography>
+                        </Box>
                     </Box>
                     <Box>
                         <IconButton 
+                            disabled={tareaEnCurso ? false : true}
                             onClick={handleClick}
                         >
                             <MoreVertIcon />
                         </IconButton>
                     </Box>
                 </Box>
-                <Box sx={{display: 'flex'}}>
-                    <Box sx={{ flexGrow: 1, p: 1 }}>
-                        <Typography variant="body2" color="text.secondary">
-                            Una descripcion cabrona de mi tarea
-                        </Typography>
-                    </Box>
-                    <Box textAlign={'center'}>
-                        <Typography variant='h6'>
-                            <b>tiempohrs.</b>
-                        </Typography>
-                    </Box>
+                <Box sx={{textOverflow: 'ellipsis', p: 1 }}>
+                    <Typography variant="body2" color="text.secondary">
+                        {tareaEnCurso ? tareaEnCurso.descripcion : ""}
+                    </Typography>
+                </Box>
+                <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                    <App />
                 </Box>
             </CardContent>
-            <CardActions>
-                <Box sx={{flexGrow: 1}}>
-                    {/* {tarea.completada === true ? (null) : ( */}
-                        <Box textAlign={'center'}>
-                            <Tooltip title="Reiniciar tarea" placement="top">
-                                <IconButton>
-                                    <ReplayIcon sx={{fontSize: 30}} />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Iniciar tarea" placement="top">
-                                <IconButton
-                                    color='primary'
-                                >
-                                    <PlayCircleIcon sx={{fontSize: 40}} />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Pausar" placement="top">
-                                <IconButton
-                                    color='error'
-                                >
-                                    <StopCircleIcon sx={{fontSize: 40}} />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Terminar" placement="top">
-                                <IconButton
-                                    color='success'
-                                    // onClick={() => completarTarea(tarea, index)}
-                                >
-                                    <DoneAllIcon sx={{fontSize: 40}} />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-                    {/* )} */}
-                </Box>
-            </CardActions>
             </Card>
             <Menu
                 id="basic-menu"
@@ -103,14 +73,10 @@ export default function TareaEnCurso({tarea}) {
                 }}
             >
                 <Box>
-                    <DeleteTarea 
-                        // idTarea={tarea._id} handleClick={handleClick} 
-                    />
+                    <DeleteTarea idTarea={tareaEnCurso?._id} handleClick={handleClick} enCurso={true} />
                 </Box>
                 <Box>
-                    <EditTarea 
-                        // tarea={tarea} handleClick={handleClick} 
-                    />
+                    <EditTarea tarea={tareaEnCurso} handleClick={handleClick} enCurso={true}/>
                 </Box>
             </Menu>
         </diiv>

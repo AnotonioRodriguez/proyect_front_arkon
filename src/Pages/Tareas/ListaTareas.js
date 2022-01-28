@@ -8,6 +8,7 @@ import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { filterTareas, tareasCompletadas } from '../../Config/reuserFuntion'
 import TareaEnCurso from './TareaEnCurso';
+import BackdropComponent from '../../Components/BackDrop'
 
 const useStyles = makeStyles(() => ({
   formInputFlex: {
@@ -45,9 +46,9 @@ export default function ListaTareas({tipoVentana}) {
   };
 
   const limpiarFiltro = () => {
-    setTareasCtx(tareasCompletadas(tipoVentana));
     setLoading(true);
-  }
+    setTareasCtx(tareasCompletadas(tipoVentana));
+  };
 
   useEffect(() => {
     setTareasCtx(tareasCompletadas(tipoVentana));
@@ -57,12 +58,13 @@ export default function ListaTareas({tipoVentana}) {
   
   const renderTareas = tareasCtx?.map((tarea, index) => {
     return(
-      <RenderTareas tarea={tarea} index={index} key={tarea._id} />
+      <RenderTareas tarea={tarea} index={index} key={tarea._id} tipoVentana={tipoVentana} />
     ); 
   })
 
   return(
     <Fragment>
+      <BackdropComponent loading={loading} />
       <Grid 
         container
         justifyContent={'center'}
@@ -148,22 +150,23 @@ export default function ListaTareas({tipoVentana}) {
 
 function RenderTareas({
   index,
-  tarea
+  tarea,
+  tipoVentana
 }) {
   return(
     <Draggable draggableId={`block-${tarea._id}`} index={index}>
 		{(provided) => (
-            <Box
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            >
-              <IconButton {...provided.dragHandleProps}>
-                  <DragIndicatorOutlinedIcon />
-              </IconButton>
-              <Box sx={{p: 1}}>
-                  <CardTarea tarea={tarea} index={index} /> 
-              </Box>
-            </Box>
+      <Box
+        ref={provided.innerRef}
+        {...provided.draggableProps}
+      >
+        <IconButton {...provided.dragHandleProps}>
+            <DragIndicatorOutlinedIcon />
+        </IconButton>
+        <Box sx={{p: 1}}>
+            <CardTarea tarea={tarea} index={index} tipoVentana={tipoVentana} /> 
+        </Box>
+      </Box>
 		)}
 		</Draggable>
   )

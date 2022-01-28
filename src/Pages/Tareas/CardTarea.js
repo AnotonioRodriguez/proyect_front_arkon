@@ -1,29 +1,26 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 
-import DoneAllIcon from '@mui/icons-material/DoneAll';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import ReplayIcon from '@mui/icons-material/Replay';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import StopCircleIcon from '@mui/icons-material/StopCircle';
 
-import { Box, Menu, Paper, Tooltip } from '@mui/material';
+import { Box, Button, Menu, Paper, Tooltip } from '@mui/material';
 import { TareasContext } from '../../Context/tareasCtx';
 import moment from 'moment';
 import 'moment/locale/es-mx';
-import { terminarTarea } from '../../Config/reuserFuntion';
+import { iniciarTarea } from '../../Config/reuserFuntion';
 import EditTarea from './EditTarea';
 import DeleteTarea from './DeleteTarea';
 
-export default function CardTarea({tarea, index}) {
+export default function CardTarea({tarea, index, tipoVentana}) {
     const { setLoading } = useContext(TareasContext);
+
+    let tareaEnCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -37,9 +34,9 @@ export default function CardTarea({tarea, index}) {
     };
 
     const completarTarea =(tarea, index) => {
-        terminarTarea(tarea, index);
+        iniciarTarea(tarea, index);
         setLoading(true);
-    }
+    };
 
     return (
         <Card sx={{ minWidth: 345, maxHeight: 300 }} component={Paper}>
@@ -51,34 +48,46 @@ export default function CardTarea({tarea, index}) {
                 }
                 action={
                     <Box sx={{display: 'flex', justifyContent:'center'}}>
-                        <Box p={1}>
+                        <Box p={1} sx={{textOverflow: 'ellipsis', overflow: 'hidden'}}>
                             <Typography>
                                 <b>{tarea.tiempo_completo} hrs.</b>
                             </Typography>
                         </Box>
-                        <Box>
-                            <Tooltip title="Iniciar" placement="top">
-                                <IconButton
-                                    color='success'
-                                    onClick={() => completarTarea(tarea, index)}
-                                >
-                                    <PlayCircleIcon sx={{fontSize: 25}} />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-                        <Box>
-                            <IconButton 
-                                onClick={handleClick}
-                            >
-                                <MoreVertIcon />
-                            </IconButton>
-                        </Box>
+                        {tipoVentana === true ? (null) : (
+                            <>
+                                <Box>
+                                    <Tooltip title="Iniciar" placement="top">
+                                        <IconButton
+                                            disabled={tareaEnCurso ? true : false}
+                                            color='success'
+                                            onClick={() => completarTarea(tarea, index)}
+                                        >
+                                            <PlayCircleIcon sx={{fontSize: 25}} />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>
+                                <Box>
+                                    <IconButton 
+                                        onClick={handleClick}
+                                    >
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                </Box>
+                            </>
+                        )}
                     </Box>
                 }
-                title={tarea.titulo_tarea}
+                title={
+                    <Box component="div"
+                    sx={{
+                        textOverflow: 'ellipsis',
+                        overflow: 'hidden'}}
+                    >
+                        {tarea.titulo_tarea}
+                    </Box>
+                }
                 subheader={moment(tarea.fecha).format('Do MMMM YYYY')}
             />
-
             <Menu
                 id="basic-menu"
                 open={open}

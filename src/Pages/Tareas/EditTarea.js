@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-export default function EditTarea({tarea, index, handleClick}) {
+export default function EditTarea({tarea, index, handleClick, enCurso }) {
 
     const { setLoading, setAlert } = useContext(TareasContext);
     const [open, setOpen] = useState(false);
@@ -34,30 +34,36 @@ export default function EditTarea({tarea, index, handleClick}) {
     let segundos = (editTarea.segundos ? parseInt((editTarea.segundos)) : parseInt('00') );
 
     const editarTarea = (data, key) => {
-        let tareas = JSON.parse(localStorage.getItem("Tareas"));
-        let tareasCompletas;
-        
-        for (let i = 0; i < tareas.length; i++) {
-          if(tareas[i]._id === data){
-            tareas[i].descripcion = editTarea.descripcion;
-            tareas[i].horas = horas;
-            tareas[i].minutos = minutos;
-            tareas[i].segundos = segundos;
-            tareas[i].tiempo_completo = (horas +":"+ minutos +":"+ segundos);
+        if(enCurso === true ){
+            let tareaCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
+            tareaCurso.descripcion = editTarea.descripcion;
+            tareaCurso.horas = horas;
+            tareaCurso.minutos = minutos;
+            tareaCurso.segundos = segundos;
+            tareaCurso.tiempo_completo = (horas +":"+ minutos +":"+ segundos);
+            localStorage.setItem('TareaEnCurso', JSON.stringify(tareaCurso));
+        }else{
+            let tareas = JSON.parse(localStorage.getItem("Tareas"));
+            let tareasCompletas;
+            for (let i = 0; i < tareas.length; i++) {
+            if(tareas[i]._id === data){
+                tareas[i].descripcion = editTarea.descripcion;
+                tareas[i].horas = horas;
+                tareas[i].minutos = minutos;
+                tareas[i].segundos = segundos;
+                tareas[i].tiempo_completo = (horas +":"+ minutos +":"+ segundos);
 
-            tareasCompletas = tareas[i];
-          };
-        };
-
-        tareas.forEach(function(elemento, indice, array) {
-            if(key === indice){
-              tareas.splice(key, 1);
-            }
-        });
-
-        tareas.push(tareasCompletas);
-        
-        localStorage.setItem('Tareas', JSON.stringify(tareas));
+                tareasCompletas = tareas[i];
+            };
+            };
+            tareas.forEach(function(elemento, indice, array) {
+                if(key === indice){
+                tareas.splice(key, 1);
+                }
+            });
+            tareas.push(tareasCompletas);
+            localStorage.setItem('Tareas', JSON.stringify(tareas));
+        }
         setAlert({ message: 'Tarea editada con exito', status: 'success', open: true });
         setLoading(true);
         handleClose();

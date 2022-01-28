@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import { TareasContext } from '../../Context/tareasCtx';
+import BackdropComponent from '../../Components/BackDrop';
 
 const useStyles = makeStyles(() => ({
     formInputFlex: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles(() => ({
 export default function NuevaTarea() {
     
     const classes = useStyles();
-    const { tareasCtx, setLoading, setAlert } = useContext(TareasContext);
+    const { loading, setLoading, setAlert } = useContext(TareasContext);
     const [open, setOpen ] = useState(false);
     const [tarea, setTarea] = useState([]); 
 
@@ -78,6 +79,7 @@ export default function NuevaTarea() {
 
     return (
         <Fragment>
+        <BackdropComponent loading={loading} />
             <Box sx={{display: 'flex', alignItems: 'center'}} >
                 <Button
                     startIcon={<AddIcon />}

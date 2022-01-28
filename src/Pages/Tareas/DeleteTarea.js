@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 
-export default function DeleteTarea(tarea, index,handleClick) {
+export default function DeleteTarea({tarea, index,handleClick, enCurso}) {
 
     const { tareasCtx, setLoading, setAlert } = useContext(TareasContext);
 
@@ -26,16 +26,24 @@ export default function DeleteTarea(tarea, index,handleClick) {
     };
 
     function borrarTarea(key) {
-        tareasCtx.forEach(function(elemento, indice, array) {
-            if(key === indice){
-                tareasCtx.splice(key, 1);
-                localStorage.setItem('Tareas', JSON.stringify(tareasCtx));
-            }
-        });
-        setLoading(true);
-        setAlert({ message: 'Tarea eliminada con exito', status: 'success', open: true });
-        handleClose(); 
-        handleClick();
+        if(enCurso === true){
+            localStorage.removeItem('TareaEnCurso');
+            setLoading(true);
+            setAlert({ message: 'Tarea eliminada con exito', status: 'success', open: true });
+            handleClose(); 
+            handleClick();
+        }else{
+            tareasCtx.forEach(function(elemento, indice, array) {
+                if(key === indice){
+                    tareasCtx.splice(key, 1);
+                    localStorage.setItem('Tareas', JSON.stringify(tareasCtx));
+                }
+            });
+            setLoading(true);
+            setAlert({ message: 'Tarea eliminada con exito', status: 'success', open: true });
+            handleClose(); 
+            handleClick();
+        }
     };
 
     return(

@@ -9,14 +9,14 @@ export const filterTareas = (value, completas) => {
     
     if(value === 'corta' ){
       for (let i = 0; i < tareas.length; i++) {
-        if(tareas[i].minutos <= 30 && tareas[i].horas === 0 ){
+        if(tareas[i].minutos <= 30 && tareas[i].horas < 1 ){
           tareasFiltradas.push(tareas[i]);
         }
       }
     };
     if(value === 'media' ){
       for (let i = 0; i < tareas.length; i++) {
-        if(tareas[i].minutos > 30 && tareas[i].horas < 1 ){
+        if(tareas[i].minutos > 30 && tareas[i].horas === 1 ){
           tareasFiltradas.push(tareas[i]);
         }
       }
@@ -76,35 +76,45 @@ export const terminarTarea = (tarea, key) => {
     };
   };
   tareas.forEach(function(elemento, indice, array) {
-      if(key === indice){
-        tareas.splice(key, 1);
-      }
+    if(key === indice){
+      tareas.splice(key, 1);
+    }
   });
   tareas.push(tareasCompletas);
   localStorage.setItem('Tareas', JSON.stringify(tareas));
 };
 
-export const crearTareas = () => {
+export const crearTareas = (cantidad) => {
   let tareas = JSON.parse(localStorage.getItem("Tareas"));
 
   let tareasAleatorias = []; 
 
   for (let i = 0; i < 50; i++) {
-    let minutos = Math.floor(Math.random()*10);
+    let minutos = Math.floor(Math.random()*59);
     let horas = Math.ceil(Math.random()*2);
-    let segundos = Math.floor(Math.random()*10);
+    let segundos = Math.floor(Math.random()*59);
 
     let datosDos = {
       _id: uuidv4(),
-      titulo_tarea: "Tarea 1",
-      descripcion: "Tarea 1",
+      titulo_tarea: `Tarea ${i+1}`,
+      descripcion: `Descripción ${i+1}`,
       fecha: moment().format(),
-      tiempo_completo: (horas + ":" + minutos  + ":" + segundos),
-      minutos: minutos,
+      tiempo_completo: 0,
+      minutos: 0,
       horas: horas,
-      segundos: segundos,
+      segundos: 0,
       completada: false,
     }; 
+
+    if(horas === 2){
+      datosDos.minutos = 0; 
+      datosDos.segundos = 0; 
+      datosDos.tiempo_completo =  (horas + ":00:00");
+    }else{
+      datosDos.minutos = minutos;
+      datosDos.segundos = segundos;
+      datosDos.tiempo_completo =  (horas + ":" + minutos + ":" + segundos)
+    };
     tareasAleatorias.push(datosDos);
   };
 
@@ -118,19 +128,24 @@ export const crearTareas = () => {
 
 export const iniciarTarea = (tarea, key) => {
   let tareas = JSON.parse(localStorage.getItem("Tareas"));
-  let tareasCompletas;
+  let tareaIniciada;
+
   for (let i = 0; i < tareas.length; i++) {
     if(tareas[i]._id === tarea._id){
-      tareas[i].completada = true;
-      tareasCompletas = tareas[i];
+      tareaIniciada = tareas[i];
     };
   };
+
   tareas.forEach(function(elemento, indice, array) {
       if(key === indice){
         tareas.splice(key, 1);
       }
   });
-  tareas.push(tareasCompletas);
+  
+  localStorage.setItem('TareaEnCurso', JSON.stringify(tareaIniciada));
   localStorage.setItem('Tareas', JSON.stringify(tareas));
+
 };
+
+
 
