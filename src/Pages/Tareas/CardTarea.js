@@ -18,9 +18,16 @@ import DeleteTarea from './DeleteTarea';
 
 export default function CardTarea({tarea, index, tipoVentana}) {
     // Llamamos los datos de actualizacion del context
-    const { setLoading } = useContext(TareasContext); 
+    const { 
+        setLoading,
+        setMinutes,
+        setSeconds,
+        setHora,
+        setTareasCtx
+    } = useContext(TareasContext); 
     // Tomamos datos de local storage
     let tareaEnCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
+    let tareasPendientes = JSON.parse(localStorage.getItem("TareasPendientes"));
 
     // Manipulacion de Menu
     const [anchorEl, setAnchorEl] = useState(null);
@@ -36,15 +43,18 @@ export default function CardTarea({tarea, index, tipoVentana}) {
 
     // Funcion encargada de mandar a llamar la funcion encargada de iniciar una tarea
     // actulizar el estado para poder cargar los datos
-    const inicarTarea = (tarea, index) => {
+    const comenzarTarea = (tarea, index) => {
         iniciarTarea(tarea, index);
-        setLoading(true);
+        setMinutes(tarea.minutos_curso);
+        setSeconds(tarea.segundos_curso);
+        setHora(tarea.horas_curso);
+        setTareasCtx(tareasPendientes);
     };
 
     // FUNCION DE COMPLETADO
     // funcion encargada de marcar tareas como completada en caso de no estar en curso solamente mandando como parametro la tarea a completar
     const completarTarea = (tarea) => {
-        terminarTarea(tarea)
+        terminarTarea(tarea, index)
         setLoading(true);
     };
 
@@ -97,7 +107,7 @@ export default function CardTarea({tarea, index, tipoVentana}) {
                                         <IconButton
                                             disabled={tareaEnCurso ? true : false}
                                             color='success'
-                                            onClick={() => inicarTarea(tarea, index)}
+                                            onClick={() => comenzarTarea(tarea, index)}
                                         >
                                             <PlayCircleIcon sx={{fontSize: 25}} />
                                         </IconButton>

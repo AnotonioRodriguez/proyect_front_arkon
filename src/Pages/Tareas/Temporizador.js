@@ -6,10 +6,12 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import { useEffect } from 'react';
 import { TareasContext } from '../../Context/tareasCtx';
+import { iniciarPrimeraTarea } from '../../Config/reuserFuntion';
 
 export default function Temporizador () {
   // Obtener los datos de LS
     let tareaEnCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
+    let tareasPendientes = JSON.parse(localStorage.getItem("TareasPendientes"));
   // estados de actulizacion del context
     const { 
       setLoading, 
@@ -17,19 +19,28 @@ export default function Temporizador () {
       setLoadingDelete, 
       loadingEditar,
       setLoadingEditar, 
+      setTareasCtx,
       loadingDelete, 
       setAlert,
-      minutes, setMinutes,
-      seconds, setSeconds,
-      hora, setHora,
+      setMinutes,
+      setSeconds,
+      setHora,
+      minutes, 
+      seconds, 
+      hora, 
     } = useContext(TareasContext);
 
     // variable de tiempo del temporizador
     let myInterval;
 
-
     // useeffectr encargado de actulizar el cronometro conforme al tiempo
     useEffect(()=>{
+      if(loading === true && tareaEnCurso ){
+        setMinutes(tareaEnCurso?.minutos_curso)
+        setSeconds(tareaEnCurso?.segundos_curso)
+        setHora(tareaEnCurso?.horas_curso)
+        setLoading(false);
+      }
       countDown();
       return ()=> {
         clearInterval(myInterval);
@@ -37,7 +48,8 @@ export default function Temporizador () {
     }, [tareaEnCurso, loading]);
 
     // Funcion encargada de inciar y restar el tiempo
-    const countDown = () =>{
+    const countDown = () => {
+
       myInterval = setInterval(() => {
         // Condicionar tiempo en segundos
         if (seconds > 0) {
@@ -96,6 +108,7 @@ export default function Temporizador () {
       if(loadingDelete === true){
         limpiarReloj();
         clearInterval(myInterval); 
+        setTareasCtx(tareasPendientes);
         setLoadingDelete(false);
       };
     }, [loadingDelete]);
@@ -120,26 +133,25 @@ export default function Temporizador () {
     // funcion encargada de marcar tareas como completadas
     const completarTarea = () => {
       // Tomamos los datos del estado de LS y editamos de la manera correcta
+      let tareasTerminadas = JSON.parse(localStorage.getItem("TareasTerminadas"));
       // La funcion como conpletada
       // Guardaremos el tiempo que resto para completar la tarea en caso de que 
       // para poder extraer las estadisticas
-      tareaEnCurso.completada = true;
       tareaEnCurso.horas_curso = hora; 
       tareaEnCurso.segundos_curso = seconds; 
       tareaEnCurso.minutos_curso = minutes; 
       // Tomaremos el arreglo de datos
-      let tareas = JSON.parse(localStorage.getItem("Tareas"));
       // Para poder insetar de nuevo el objeto editado
-      tareas.push(tareaEnCurso);
-
+      tareasTerminadas.push(tareaEnCurso);
       // Guardamos de nuevo el array modificado de nuestras tareas
-      localStorage.setItem('Tareas', JSON.stringify(tareas));
-      setLoading(true);
+      localStorage.setItem('TareasTerminadas', JSON.stringify(tareasTerminadas));
       // Eliminamos la tarea que estaba en curso de nuestro LS
       localStorage.removeItem("TareaEnCurso");
       setAlert({ message: 'Tarea finalizada con exito', status: 'success', open: true });
       // limpiamos el inicializamos de nuevo el reloj
       limpiarReloj();
+      iniciarPrimeraTarea();
+      setLoading(true)
     };
 
   return (

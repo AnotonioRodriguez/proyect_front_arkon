@@ -12,6 +12,7 @@ export const TareasProvider = ({ children }) => {
   const [ loading, setLoading ] = useState(false);
   const [ loadingDelete, setLoadingDelete ] = useState(false);
   const [ loadingEditar, setLoadingEditar ] = useState(false);
+  const [ loadingHistorial, setLoadingHistorial ] = useState(false);
   const [ alert, setAlert ] = useState({ message: "", status: "", open: false });
 
   const [ minutes, setMinutes ] = useState( tareaEnCurso ? tareaEnCurso.minutos_curso : null );
@@ -32,10 +33,15 @@ export const TareasProvider = ({ children }) => {
       alert, 
       tareasTerminadasCtx, 
       setTareasTerminadasCtx,
+      loadingHistorial, 
+      setLoadingHistorial,
       setAlert,
-      minutes, setMinutes,
-      seconds, setSeconds,
-      hora, setHora,
+      minutes, 
+      setMinutes,
+      seconds, 
+      setSeconds,
+      hora, 
+      setHora,
     }}>
       {children}
     </TareasContext.Provider>

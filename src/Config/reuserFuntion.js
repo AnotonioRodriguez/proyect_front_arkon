@@ -15,7 +15,7 @@ export const filterTareas = (value, tareas) => {
     // crearemos condicion para una de las diferentes tipos
     if(value === 'corta' ){
       // despues de identificar el tipo recorreremos todo nuestro objeto
-      for (let i = 0; i < tareas.length; i++) {
+      for (let i = 0; i < tareas?.length; i++) {
         // Para ahoora solo condicionar por el margen de tiempo las tareas
         if(tareas[i].minutos <= 30 && tareas[i].horas < 1 ){
           // Guardaras dentro del array iniciado anteiormente
@@ -25,14 +25,14 @@ export const filterTareas = (value, tareas) => {
     };
     // repetimos el proceso pero ahora por diferente margen de tiempo
     if(value === 'media' ){
-      for (let i = 0; i < tareas.length; i++) {
+      for (let i = 0; i < tareas?.length; i++) {
         if(tareas[i].minutos > 30 && tareas[i].horas === 0 ){
           tareasFiltradas.push(tareas[i]);
         }
       }
     };
     if(value === 'larga' ){
-      for (let i = 0; i < tareas.length; i++) {
+      for (let i = 0; i < tareas?.length; i++) {
         if(tareas[i].horas >= 1 ){
           tareasFiltradas.push(tareas[i]);
         }
@@ -44,17 +44,18 @@ export const filterTareas = (value, tareas) => {
 // Funcion que da por terminada una tarea
 export const terminarTarea = (tarea, key) => {
   // Obtenemos los datos por medio de LS
-  let tareas = JSON.parse(localStorage.getItem("Tareas"));
-  let tareasCompletas;
+  let tareasPendientes = JSON.parse(localStorage.getItem("TareasPendientes"));
+  let tareasTerminadas = JSON.parse(localStorage.getItem("TareasTerminadas"));
+  let tareasCompleta;
+
   // Filtraremos los datos
   // Para poder dar por concluida y editar el campo correspondiente
-  for (let i = 0; i < tareas.length; i++) {
-    if(tareas[i]._id === tarea._id){
-      tareas[i].completada = true;
-      tareasCompletas = tareas[i];
-      tareas.forEach(function(elemento, indice, array) {
+  for (let i = 0; i < tareasPendientes.length; i++) {
+    if(tareasPendientes[i]._id === tarea._id){
+      tareasCompleta = tareasPendientes[i];
+      tareasPendientes.forEach(function(elemento, indice, array) {
         if(key === indice){
-          tareas.splice(key, 1);
+          tareasPendientes.splice(key, 1);
         }
       });
     };
@@ -62,12 +63,10 @@ export const terminarTarea = (tarea, key) => {
   // Eliminaremos la tarea antigua sin editar de nuestra lista
   
   // Para poder guardar la nueva dentro del array y poder guardar en LS
-  tareas.push(tareasCompletas);
-  localStorage.setItem('Tareas', JSON.stringify(tareas));
+  tareasTerminadas.push(tareasCompleta);
+  localStorage.setItem('TareasPendientes', JSON.stringify(tareasPendientes));
+  localStorage.setItem('TareasTerminadas', JSON.stringify(tareasTerminadas));
 };
-
-
-
 
 // Funcion encargada de crear un numero de tareas de prueba
 export const crearTareas = (cantidad) => {
@@ -82,7 +81,7 @@ export const crearTareas = (cantidad) => {
   };
 
   // Tomaremo en caso de exitir LS
-  let tareas = JSON.parse(localStorage.getItem("Tareas"));
+  let tareas = JSON.parse(localStorage.getItem("TareasTerminadas"));
   // iniciamos nuestro array
   let tareasAleatorias = []; 
 
@@ -101,7 +100,7 @@ export const crearTareas = (cantidad) => {
     // declaramos nuestro objeto
     // Por medio del ciclo for daremos numeracion a las tarea y las desciones
     // el codigo de indentificacion es generadio por medio de la libreria de uudv4
-    let datosDos = {
+    let data = {
       _id: uuidv4(),
       titulo_tarea: `Tarea ${i+1}`,
       descripcion: `Descripción ${i+1}`,
@@ -119,26 +118,26 @@ export const crearTareas = (cantidad) => {
     // Condionamremos nuestros tiempos no debe exeder de 2 horas y
     // respetamos los tiempos de segudnso, horas
     if(horas === 2){
-      datosDos.minutos = 0; 
-      datosDos.segundos = 0; 
+      data.minutos = 0; 
+      data.segundos = 0; 
 
       // realizamos pequena operaciones para restar mas tiempo de lo normal y
       // la tarea este dentro de un mager mayor de completa
-      datosDos.segundos_curso = parseInt((segundos_curso/2)); 
-      datosDos.minutos_curso = parseInt((minutos_curso/2)); 
+      data.segundos_curso = parseInt((segundos_curso/2)); 
+      data.minutos_curso = parseInt((minutos_curso/2)); 
 
-      datosDos.tiempo_completo =  (horas + ":00:00");
+      data.tiempo_completo =  (horas + ":00:00");
     }else{
 
-      datosDos.minutos = minutos;
-      datosDos.segundos = segundos;
+      data.minutos = minutos;
+      data.segundos = segundos;
 
-      datosDos.segundos_curso = parseInt((segundos_curso/2)); 
-      datosDos.minutos_curso = parseInt((minutos_curso/2));
+      data.segundos_curso = parseInt((segundos_curso/2)); 
+      data.minutos_curso = parseInt((minutos_curso/2));
 
-      datosDos.tiempo_completo =  (horas + ":" + minutos + ":" + segundos)
+      data.tiempo_completo =  (horas + ":" + minutos + ":" + segundos)
     };
-    tareasAleatorias.push(datosDos);
+    tareasAleatorias.push(data);
   };
 
   // Rn naso de no existir tareas guararemos en un nuevo array
@@ -146,16 +145,18 @@ export const crearTareas = (cantidad) => {
     localStorage.setItem('TareasTerminadas', JSON.stringify(tareasAleatorias));
   }else{
     // en caso de ya existir guardaremos sobre lo existente
-    tareas.push(tareasAleatorias);
+    tareasAleatorias.forEach(element => {
+      tareas.push(element);
+    });
+    
     localStorage.setItem('TareasTerminadas', JSON.stringify(tareas));
   }
 };
 
-
 // Funcion encargada de iniciar una atra de forma manual
 export const iniciarTarea = (tarea, key) => {
   // ontenemos datos de Ls
-  let tareas = JSON.parse(localStorage.getItem("Tareas"));
+  let tareas = JSON.parse(localStorage.getItem("TareasPendientes"));
   let tareaIniciada;
 
   // recorremos el array en busca de la tarea que concida con el id seleccionado
@@ -174,26 +175,26 @@ export const iniciarTarea = (tarea, key) => {
 
   // Poder Guardar los datos correctamente en cada item ciorrespondiente
   localStorage.setItem('TareaEnCurso', JSON.stringify(tareaIniciada));
-  localStorage.setItem('Tareas', JSON.stringify(tareas));
+  localStorage.setItem('TareasPendientes', JSON.stringify(tareas));
   
 };
 
 // Funcion encargada de dar por inciada la primera tarea de la lista
 export const iniciarPrimeraTarea = () => {
-  let tareas = JSON.parse(localStorage.getItem("Tareas"));
+  let tareas = JSON.parse(localStorage.getItem("TareasPendientes"));
   if(!tareas){
     return null;
   }else{
     // Recorrer todos los campos de datos para poder identificar la prrimera pocision y obtenerla
     for (let i = 0; i < tareas.length; i++) {
-      if( tareas[i].completada === false ){
-        localStorage.setItem('TareaEnCurso', JSON.stringify( tareas[i]));
+      if( i === 0 ){
+        localStorage.setItem('TareaEnCurso', JSON.stringify(tareas[i]));
         tareas.forEach(function(elemento, indice, array) {
             if(i === indice){
               tareas.splice(i, 1);
             }
         });
-        return localStorage.setItem('Tareas', JSON.stringify(tareas));
+        localStorage.setItem('TareasPendientes', JSON.stringify(tareas));
       };
     };
 

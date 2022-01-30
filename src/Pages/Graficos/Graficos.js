@@ -15,20 +15,9 @@ const useStyles = makeStyles(() => ({
 export default function Graficos() {
 
   let tareasCompletas = JSON.parse(localStorage.getItem("TareasTerminadas"));
-  
-
-  // let nuevoObjeto = []
-  // tareasCompletas.forEach( x => {
-  //   if(!nuevoObjeto.hasOwnProperty(x.fecha)){
-  //     nuevoObjeto[[x.fecha]] = []
-  //   };
-  //   nuevoObjeto[x.fecha].push({});
-  // });
-  // console.log(nuevoObjeto)
-
   var nuevoArray = []
 	var arrayTemporal = []
-	for(var i=0; i< tareasCompletas.length; i++){
+	for(var i=0; i< tareasCompletas?.length; i++){
 	    arrayTemporal = nuevoArray.filter(resp => resp["fecha"] == tareasCompletas[i]["fecha"])
 	    if(arrayTemporal.length>0){
 	        nuevoArray[nuevoArray.indexOf(arrayTemporal[0])]["tareas"].push(tareasCompletas[i]["fecha"])
@@ -67,8 +56,8 @@ export default function Graficos() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {dataTarea?.map((row, index) => (
-                    <TableRow key={index}>
+                  {dataTarea?.map((row) => (
+                    <TableRow key={row._id}>
                       <TableCell align="center">{row.fecha}</TableCell>
                       <TableCell align="center">{row.tareasCompletas}</TableCell>
                       <TableCell align="center">{row.numeroTarea}</TableCell>

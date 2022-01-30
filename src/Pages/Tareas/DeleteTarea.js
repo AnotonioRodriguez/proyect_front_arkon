@@ -2,11 +2,13 @@ import { Box, Button, Dialog, DialogActions, Typography } from '@mui/material';
 import React, { useContext, useState } from 'react';
 import { TareasContext } from '../../Context/tareasCtx';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { iniciarPrimeraTarea } from '../../Config/reuserFuntion';
 
-export default function DeleteTarea({ index,handleClick, enCurso}) {
+export default function DeleteTarea({ index, handleClick, enCurso}) {
 
     // Datos de estado y datos de context
-    const { tareasCtx, setLoading, setLoadingDelete, setAlert } = useContext(TareasContext);
+    const { setTareasCtx, setLoadingDelete, setAlert } = useContext(TareasContext);
+    let tareasPendientes = JSON.parse(localStorage.getItem("TareasPendientes"));
 
     // estado de la ventana
     const [open, setOpen] = useState(false);
@@ -22,27 +24,28 @@ export default function DeleteTarea({ index,handleClick, enCurso}) {
             // Al ser una tarea en curso se borra el json por completo de LS
             localStorage.removeItem('TareaEnCurso');
             setAlert({ message: 'Tarea eliminada con exito', status: 'success', open: true });
-            setLoading(true);
-            handleClose(); 
+            iniciarPrimeraTarea();
             setLoadingDelete(true);
+            handleClose(); 
             handleClick();
         }else{
             // Al ser una tarea de la lista
             // Recorrer todo el array de objertos para identificar nuestra tarea
-            tareasCtx.forEach(function(elemento, indice, array) {
+            tareasPendientes.forEach(function(elemento, indice, array) {
                 if(key === indice){
-                    // Por medio del metodo de splice borraremos el index que se ha seleccionado dentro de la lista
-                    tareasCtx.splice(key, 1); 
+                    // Por ;medio del metodo de splice borraremos el index que se ha seleccionado dentro de la lista
+                    tareasPendientes.splice(key, 1); 
                     // Retoranmos nuestra lista nueva en el LS ya si los datos eliminados
-                    localStorage.setItem('TareasPendientes', JSON.stringify(tareasCtx));
+                    localStorage.setItem('TareasPendientes', JSON.stringify(tareasPendientes));
                 }
             });
             // Actualizamos todos los estados y mandamos mensaje de alrta
-            setLoading(true);
             setAlert({ message: 'Tarea eliminada con exito', status: 'success', open: true });
+            setTareasCtx(tareasPendientes);
             handleClose(); 
             handleClick();
         }
+        setTareasCtx(tareasPendientes);
     };
 
     return(

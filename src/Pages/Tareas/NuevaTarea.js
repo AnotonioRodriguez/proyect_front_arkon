@@ -38,7 +38,12 @@ const useStyles = makeStyles(() => ({
 export default function NuevaTarea() {
     const classes = useStyles();
     // obtnemos los datos de estado 
-    const { loading, setLoading, setTareasCtx, setAlert } = useContext(TareasContext);
+    const { 
+        loading, 
+        setLoading, 
+        setTareasCtx, 
+        setAlert,
+    } = useContext(TareasContext);
     const [open, setOpen ] = useState(false);
     const [tarea, setTarea] = useState([]); 
     const [tiempoPre, setTiempoPre] = useState(''); 
@@ -100,21 +105,27 @@ export default function NuevaTarea() {
     const agregarTarea = () => { 
         // tomamos datos de LS
         let datosLocal = JSON.parse(localStorage.getItem("TareasPendientes"));
+        let tareaEnCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
         // Condicionamos si ya existe un array de objetos de tareas
-        if(!datosLocal){
+        if(!tareaEnCurso){
             // en caso de no existir crearemos el primero
-            localStorage.setItem('TareasPendientes', JSON.stringify([datos]));
-            setLoading(true); 
-            setTareasCtx(datos);
-            setTarea([])
+            localStorage.setItem('TareaEnCurso', JSON.stringify(datos));
+            setTarea([]);
+            setTiempoPre('');
+            setLoading(true);
         }else{
-            // en caso de ya existir guardaremos dentro del array el nuevo objeto
-            datosLocal.push(datos);
-            // Para despues guardar el nuevo array de datos dentero de LS
-            localStorage.setItem("TareasPendientes", JSON.stringify(datosLocal));
-            setTareasCtx(datosLocal);
-            setLoading(true); 
-            setTarea([])
+            if(!datosLocal){
+                localStorage.setItem("TareasPendientes", JSON.stringify([datos]));
+                setTareasCtx([datos]);
+            }else{
+                // en caso de ya existir guardaremos dentro del array el nuevo objeto
+                datosLocal.push(datos);
+                // Para despues guardar el nuevo array de datos dentero de LS
+                localStorage.setItem("TareasPendientes", JSON.stringify(datosLocal));
+                setTareasCtx(datosLocal);
+            }
+            setTiempoPre('');
+            setTarea([]);
         };
         setAlert({ message: 'Tarea agregada con exito', status: 'success', open: true });
         handleOpen();

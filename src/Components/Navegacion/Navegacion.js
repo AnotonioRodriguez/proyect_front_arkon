@@ -12,8 +12,10 @@ import { TareasContext } from '../../Context/tareasCtx';
 import { crearTareas } from '../../Config/reuserFuntion';
 
 export default function Navegacion() {
-  const { alert, setAlert, setLoading} = useContext(TareasContext);
+  const { alert, setAlert, setLoadingHistorial, setTareasTerminadasCtx} = useContext(TareasContext);
   const [ open, setOpen ] = useState(false);
+
+  let tareasTerminadas = JSON.parse(localStorage.getItem("TareasTerminadas"));
 
   const handleOpenMenu =()=>{
     setOpen(!open);
@@ -62,8 +64,8 @@ export default function Navegacion() {
               </MenuItem>
               <MenuItem 
                 onClick={() => {
-                  crearTareas()
-                  setLoading(true)
+                  crearTareas();
+                  setLoadingHistorial(true);
                 }}
               >
                 <Typography variant='h6'> 
@@ -109,7 +111,7 @@ export default function Navegacion() {
           <MenuItem 
             onClick={() => {
               crearTareas()
-              setLoading(true);
+              setLoadingHistorial(true);
             }}
           >
             <Typography variant='h6'> 

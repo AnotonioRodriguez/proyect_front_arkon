@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
 
 export default function EditTarea({tarea, index, handleClick, enCurso }) {
 // Datos de estado y de context
-    const { setLoading, setAlert, setLoadingEditar } = useContext(TareasContext);
+    const { setAlert, setLoadingEditar, setTareasCtx } = useContext(TareasContext);
     const [open, setOpen] = useState(false);
     const classes = useStyles()
 
@@ -59,7 +59,7 @@ export default function EditTarea({tarea, index, handleClick, enCurso }) {
             setLoadingEditar(true);
         }else{
             // Al ser de una lista tomaremos los datos completos de toda la lista
-            let tareas = JSON.parse(localStorage.getItem("Tareas"));
+            let tareas = JSON.parse(localStorage.getItem("TareasPendientes"));
             // declaramos nuevo arreglo para guardar datos
             let tareasCompletas;
             // recorremos toda la lista
@@ -82,17 +82,17 @@ export default function EditTarea({tarea, index, handleClick, enCurso }) {
             // para poder eliminar el objeto que hemos editado
             tareas.forEach(function(elemento, indice, array) {
                 if(key === indice){
-                tareas.splice(key, 1);
+                    tareas.splice(key, 1);
                 }
             });
             // Guardamos en el arreglo editado nuestro nuevo objeto editado
             tareas.push(tareasCompletas);
             // Guardamos los datos de nuevo en su item de LS
             localStorage.setItem('TareasPendientes', JSON.stringify(tareas));
+            setTareasCtx(tareas);
         }
         // Lanzamos mensajes de alerta y actualizamos nuestros estados
         setAlert({ message: 'Tarea editada con exito', status: 'success', open: true });
-        setLoading(true);
         handleClose();
         handleClick();
     };

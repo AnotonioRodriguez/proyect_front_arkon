@@ -17,8 +17,9 @@ const useStyles = makeStyles(() => ({
 
 export default function Historial() {
   const { 
-    loading, 
+    loadingHistorial, 
     tareasTerminadasCtx, 
+    setLoadingHistorial,
     setTareasTerminadasCtx,
   } = useContext(TareasContext);
   let tareasCompletas = JSON.parse(localStorage.getItem("TareasTerminadas"));
@@ -42,8 +43,9 @@ export default function Historial() {
   };
 
   useEffect(() => {
-    setTareasTerminadasCtx(tareasTerminadasCtx);
-  }, [loading]);
+    setTareasTerminadasCtx(tareasCompletas);
+    setLoadingHistorial(false);
+  }, [loadingHistorial]);
 
   return (
     <Fragment>
@@ -103,7 +105,7 @@ export default function Historial() {
         <Grid item lg={6} md={12} xs={12}>
           {tareasTerminadasCtx?.map((tarea, index) =>{
             return(
-              <Box sx={{p: 1}}>
+              <Box sx={{p: 1}} key={tarea._id}>
                 <CardTarea tarea={tarea} index={index} tipoVentana={true} /> 
               </Box>
             );
