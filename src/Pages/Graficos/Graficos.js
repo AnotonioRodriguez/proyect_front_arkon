@@ -47,7 +47,7 @@ export default function Graficos() {
       numeroTarea: (i + 1).toString(),
     };
     dataTarea.push(datos);
-  }
+  };
 
   return (
     <Fragment>
