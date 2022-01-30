@@ -88,7 +88,7 @@ export default function EditTarea({tarea, index, handleClick, enCurso }) {
             // Guardamos en el arreglo editado nuestro nuevo objeto editado
             tareas.push(tareasCompletas);
             // Guardamos los datos de nuevo en su item de LS
-            localStorage.setItem('Tareas', JSON.stringify(tareas));
+            localStorage.setItem('TareasPendientes', JSON.stringify(tareas));
         }
         // Lanzamos mensajes de alerta y actualizamos nuestros estados
         setAlert({ message: 'Tarea editada con exito', status: 'success', open: true });

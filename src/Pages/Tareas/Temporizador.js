@@ -30,10 +30,10 @@ export default function Temporizador () {
 
     // useeffectr encargado de actulizar el cronometro conforme al tiempo
     useEffect(()=>{
-        countDown();
-        return ()=> {
-          clearInterval(myInterval);
-        };
+      countDown();
+      return ()=> {
+        clearInterval(myInterval);
+      };
     }, [tareaEnCurso, loading]);
 
     // Funcion encargada de inciar y restar el tiempo
@@ -100,7 +100,6 @@ export default function Temporizador () {
       };
     }, [loadingDelete]);
 
-
     // Recargar en caso que de editen una tarea
     // por medio del state del context de editen
     useEffect(() => {
@@ -109,7 +108,6 @@ export default function Temporizador () {
         setLoadingEditar(false);
       };
     }, [loadingEditar]);
-    
 
     // Funcion encargada de reiniciar tu cronometro con el tiempo poor default desde un inicio
     const reiniciarReloj =()=>{
@@ -121,7 +119,6 @@ export default function Temporizador () {
     // FUNCION DE COMPLETADO
     // funcion encargada de marcar tareas como completadas
     const completarTarea = () => {
-      setLoading(true);
       // Tomamos los datos del estado de LS y editamos de la manera correcta
       // La funcion como conpletada
       // Guardaremos el tiempo que resto para completar la tarea en caso de que 
@@ -135,7 +132,7 @@ export default function Temporizador () {
       // Para poder insetar de nuevo el objeto editado
       tareas.push(tareaEnCurso);
 
-      // Guardamos de nuevo el array modificado
+      // Guardamos de nuevo el array modificado de nuestras tareas
       localStorage.setItem('Tareas', JSON.stringify(tareas));
       setLoading(true);
       // Eliminamos la tarea que estaba en curso de nuestro LS

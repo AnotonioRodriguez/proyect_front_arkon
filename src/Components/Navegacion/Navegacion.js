@@ -72,7 +72,7 @@ export default function Navegacion() {
               </MenuItem>
               <MenuItem component={Link} to='/graficos'>
                 <Typography variant='h6'> 
-                  <b>Graficos</b>
+                  <b>Estadisticas</b>
                 </Typography>
               </MenuItem>
             </Box>
@@ -109,7 +109,7 @@ export default function Navegacion() {
           <MenuItem 
             onClick={() => {
               crearTareas()
-              setLoading(true)
+              setLoading(true);
             }}
           >
             <Typography variant='h6'> 
@@ -120,7 +120,7 @@ export default function Navegacion() {
         <Box sx={{p: 1}}>
           <MenuItem component={Link} to='/graficos'>
             <Typography variant='h6'> 
-              <b>Graficos</b>
+              <b>Estadisticas</b>
             </Typography>
           </MenuItem>
         </Box>

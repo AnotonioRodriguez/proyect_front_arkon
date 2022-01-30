@@ -34,7 +34,7 @@ export default function DeleteTarea({ index,handleClick, enCurso}) {
                     // Por medio del metodo de splice borraremos el index que se ha seleccionado dentro de la lista
                     tareasCtx.splice(key, 1); 
                     // Retoranmos nuestra lista nueva en el LS ya si los datos eliminados
-                    localStorage.setItem('Tareas', JSON.stringify(tareasCtx));
+                    localStorage.setItem('TareasPendientes', JSON.stringify(tareasCtx));
                 }
             });
             // Actualizamos todos los estados y mandamos mensaje de alrta

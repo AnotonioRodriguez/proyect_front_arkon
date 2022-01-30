@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
 export default function NuevaTarea() {
     const classes = useStyles();
     // obtnemos los datos de estado 
-    const { loading, setLoading, setAlert } = useContext(TareasContext);
+    const { loading, setLoading, setTareasCtx, setAlert } = useContext(TareasContext);
     const [open, setOpen ] = useState(false);
     const [tarea, setTarea] = useState([]); 
     const [tiempoPre, setTiempoPre] = useState(''); 
@@ -94,25 +94,27 @@ export default function NuevaTarea() {
         segundos_curso: segundos,
         minutos_curso: minutos,
         horas_curso: horas,
-        // estado de completada para filtro declara en false por ser la primera aun no completada
-        completada: false,
     }; 
     
     // funcion encargada de agregar una nueva tarea
     const agregarTarea = () => { 
         // tomamos datos de LS
-        let datosLocal = JSON.parse(localStorage.getItem("Tareas"));
+        let datosLocal = JSON.parse(localStorage.getItem("TareasPendientes"));
         // Condicionamos si ya existe un array de objetos de tareas
         if(!datosLocal){
             // en caso de no existir crearemos el primero
-            localStorage.setItem('Tareas', JSON.stringify([datos]));
+            localStorage.setItem('TareasPendientes', JSON.stringify([datos]));
             setLoading(true); 
+            setTareasCtx(datos);
+            setTarea([])
         }else{
             // en caso de ya existir guardaremos dentro del array el nuevo objeto
             datosLocal.push(datos);
             // Para despues guardar el nuevo array de datos dentero de LS
-            localStorage.setItem("Tareas", JSON.stringify(datosLocal));
+            localStorage.setItem("TareasPendientes", JSON.stringify(datosLocal));
+            setTareasCtx(datosLocal);
             setLoading(true); 
+            setTarea([])
         };
         setAlert({ message: 'Tarea agregada con exito', status: 'success', open: true });
         handleOpen();

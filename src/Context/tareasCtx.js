@@ -6,7 +6,9 @@ export const TareasProvider = ({ children }) => {
   //DATOS TOMADOS DE LOCAL STORAGE 
   let tareaEnCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
 
-  const [ tareasCtx, setTareasCtx ] = useState(JSON.parse(localStorage.getItem("Tareas")));
+  const [ tareasCtx, setTareasCtx ] = useState(JSON.parse(localStorage.getItem("TareasPendientes")));
+  const [ tareasTerminadasCtx, setTareasTerminadasCtx ] = useState(JSON.parse(localStorage.getItem("TareasTerminadas")));
+
   const [ loading, setLoading ] = useState(false);
   const [ loadingDelete, setLoadingDelete ] = useState(false);
   const [ loadingEditar, setLoadingEditar ] = useState(false);
@@ -28,6 +30,8 @@ export const TareasProvider = ({ children }) => {
       loadingEditar, 
       setLoadingEditar,
       alert, 
+      tareasTerminadasCtx, 
+      setTareasTerminadasCtx,
       setAlert,
       minutes, setMinutes,
       seconds, setSeconds,

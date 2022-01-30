@@ -9,9 +9,10 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import { Box, Menu, Paper, Tooltip } from '@mui/material';
 import { TareasContext } from '../../Context/tareasCtx';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 import moment from 'moment';
 import 'moment/locale/es-mx';
-import { iniciarTarea } from '../../Config/reuserFuntion';
+import { iniciarTarea, terminarTarea } from '../../Config/reuserFuntion';
 import EditTarea from './EditTarea';
 import DeleteTarea from './DeleteTarea';
 
@@ -40,9 +41,24 @@ export default function CardTarea({tarea, index, tipoVentana}) {
         setLoading(true);
     };
 
-    // let minutosTiempo = (tarea.minutos_curso - 60);
-    // let segundosTiempo = (tarea.segundos_curso - 60);
-    // let horasTiempo = (tarea.horas_curso - 2);
+    // FUNCION DE COMPLETADO
+    // funcion encargada de marcar tareas como completada en caso de no estar en curso solamente mandando como parametro la tarea a completar
+    const completarTarea = (tarea) => {
+        terminarTarea(tarea)
+        setLoading(true);
+    };
+
+    // Funcion para poder tomar la diferencia de tiempos y obtener el tiempo que tomo terminar
+    const diferenciaTiempo = (tarea) => {
+        var start = moment.duration(`${tarea.hora}:${tarea.minutos}`, "HH:mm"),
+        end = moment.duration(`${tarea.horas_curso}:${tarea.minutos_curso}`  , "HH:mm"),
+        diff = end.subtract(start);
+        diff.hours();
+        diff.minutes();
+        var tiempo = `${diff.hours() < 9 ? `0${diff.hours()}` : diff.hours()}:${diff.minutes() < 9 ? `0${diff.minutes()}` : diff.minutes() }`
+        return (tiempo);
+    };
+   
 
     return (
         <Card sx={{ minWidth: 345, maxHeight: 300 }} component={Paper}>
@@ -54,17 +70,28 @@ export default function CardTarea({tarea, index, tipoVentana}) {
                 }
                 action={
                     <Box sx={{display: 'flex', justifyContent:'center'}}>
-                        <Box p={1} sx={{textOverflow: 'ellipsis', overflow: 'hidden'}}>
-                            <Typography>
-                                <b>
-                                    {/* {horasTiempo} : {minutosTiempo} : {segundosTiempo} hrs. */}
-                                </b>
-                            </Typography>
-                        </Box>
                         {/* Concionamos el tipo de ventana que se estara mosntrando ya que estamos reutilizando componentes */}
                         {/* el tipo de ventana que se hace llegar por props nos ayuda a saber si es historial o tareas */}
-                        {tipoVentana === true ? (null) : (
+                        {tipoVentana === true ? (
+                            <Box p={1} sx={{textOverflow: 'ellipsis', overflow: 'hidden'}}>
+                                <Typography>
+                                    <b style={{color: 'green'}}>
+                                        Tiempo restante: {diferenciaTiempo(tarea)} hrs.
+                                    </b>
+                                </Typography>
+                            </Box>
+                        ) : (
                             <>
+                                <Box>
+                                    <Tooltip title="Terminar" placement="top">
+                                        <IconButton
+                                            color='success'
+                                            onClick={() => completarTarea(tarea)}
+                                        >
+                                            <DoneAllIcon sx={{fontSize: 25}} />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>
                                 <Box>
                                     <Tooltip title="Iniciar" placement="top">
                                         <IconButton
