@@ -16,12 +16,15 @@ export default function Tareas() {
   const tareaEnCurso = JSON.parse(localStorage.getItem("TareaEnCurso"));
 
   window.addEventListener('beforeunload', function (e) {
-    if(tareaEnCurso){
-      tareaEnCurso.segundos_curso = seconds;
-      tareaEnCurso.minutos_curso = minutes;
-      tareaEnCurso.horas_curso = hora;
-      localStorage.setItem('TareaEnCurso', JSON.stringify(tareaEnCurso));
+    if(e.preventDefault()){
+      if(tareaEnCurso){
+        tareaEnCurso.segundos_curso = seconds;
+        tareaEnCurso.minutos_curso = minutes;
+        tareaEnCurso.horas_curso = hora;
+        localStorage.setItem('TareaEnCurso', JSON.stringify(tareaEnCurso));
+      }
     }
+
   });
   
   return (

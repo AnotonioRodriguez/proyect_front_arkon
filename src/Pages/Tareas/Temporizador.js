@@ -140,11 +140,16 @@ export default function Temporizador () {
       tareaEnCurso.horas_curso = hora; 
       tareaEnCurso.segundos_curso = seconds; 
       tareaEnCurso.minutos_curso = minutes; 
-      // Tomaremos el arreglo de datos
-      // Para poder insetar de nuevo el objeto editado
-      tareasTerminadas.push(tareaEnCurso);
-      // Guardamos de nuevo el array modificado de nuestras tareas
-      localStorage.setItem('TareasTerminadas', JSON.stringify(tareasTerminadas));
+      if(!tareasTerminadas){
+        localStorage.setItem('TareasTerminadas', JSON.stringify([tareaEnCurso]));
+      }else{
+        // Tomaremos el arreglo de datos
+        // Para poder insetar de nuevo el objeto editado
+        tareasTerminadas.push(tareaEnCurso);
+        // Guardamos de nuevo el array modificado de nuestras tareas
+        localStorage.setItem('TareasTerminadas', JSON.stringify(tareasTerminadas));
+      }
+      
       // Eliminamos la tarea que estaba en curso de nuestro LS
       localStorage.removeItem("TareaEnCurso");
       setAlert({ message: 'Tarea finalizada con exito', status: 'success', open: true });
