@@ -79,6 +79,7 @@ export default function Temporizador () {
         // AL ser una tarea completada
         // se ejecutara a funcion que completa una tarea
         if(minutes === 0 && hora === 0 && seconds === 0){
+          limpiarReloj();
           completarTarea();
         }
       }, 1000);
@@ -106,10 +107,11 @@ export default function Temporizador () {
     // por medio del state del context de eliminar
     useEffect(() => {
       if(loadingDelete === true){
-        limpiarReloj();
         clearInterval(myInterval); 
         setTareasCtx(tareasPendientes);
         setLoadingDelete(false);
+        limpiarReloj();
+        setLoading(true)
       };
     }, [loadingDelete]);
 
